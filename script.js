@@ -495,16 +495,11 @@ function processPayment() {
 }
 
 function openRazorpayLink() {
-    console.log("🔵 PAY VIA WHATSAPP clicked");
-    
     // 1. Validation (Same as processPayment)
     if(cart.length === 0) {
-        console.error("❌ Cart is empty");
         showToast("❌ Cart is empty! Add items first", 'error');
         return;
     }
-    
-    console.log("✅ Cart items found:", cart.length);
     
     const nameEl = document.getElementById('cust-name');
     const phoneEl = document.getElementById('cust-phone');
@@ -517,11 +512,8 @@ function openRazorpayLink() {
     const locationType = typeEl ? typeEl.value.trim() : 'General';
     const note = document.getElementById('delivery-note') ? document.getElementById('delivery-note').value.trim() : '';
     
-    console.log("📋 Form Data:", {name, phone, address, locationType, note});
-    
     // Validate all required fields
     if(!name || !phone || !address || !locationType) {
-        console.error("❌ Missing required fields");
         const missing = [];
         if(!name) missing.push('Name');
         if(!phone) missing.push('Phone');
@@ -532,18 +524,13 @@ function openRazorpayLink() {
         return;
     }
     
-    console.log("✅ All fields present");
-    
     // Validate phone number (should be 10 digits)
     const phoneRegex = /^[0-9]{10}$/;
     if(!phoneRegex.test(phone.replace(/[^0-9]/g, ''))) {
-        console.error("❌ Invalid phone:", phone);
         showToast("⚠️ Phone number must be 10 digits", 'warning');
         switchTab('tab-delivery');
         return;
     }
-    
-    console.log("✅ Phone valid");
     
     // Get location type display name
     const locationTypeMap = {
@@ -580,61 +567,48 @@ function openRazorpayLink() {
         deliveryNoteText = `%0A📝 *Special Instructions:* ${encodeURIComponent(note)}`;
     }
     
-    // Get latitude and longitude if available (from geolocation)
-    const locationLat = addressElem.dataset.latitude || null;
-    const locationLng = addressElem.dataset.longitude || null;
+  // Build Google Maps URL (latitude & longitude OR full address)
+const mapsUrl = locationLat && locationLng
+  ? `https://www.google.com/maps?q=${locationLat},${locationLng}`
+  : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 
-    // Build Google Maps URL (latitude & longitude OR full address)
-    const mapsUrl = locationLat && locationLng
-      ? `https://www.google.com/maps?q=${locationLat},${locationLng}`
-      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+const orderNote = `🛍️ *NEW ORDER — HYPE DELIVERY*
 
-const orderNote =
-  `🛍️ *NEW ORDER — HYPE DELIVERY*` +
+💰 *TOTAL AMOUNT:* ₹${totalAmount}
 
-  `💰 *TOTAL AMOUNT:* ₹${totalAmount}` +
+📦 *ORDER ITEMS:*
+${cart.map(i => `• ${i.qty} × ${i.name} — ₹${i.price * i.qty}`).join('\n')}
 
-  `📦 *ORDER ITEMS:*` +
-  cart.map(i => `• ${i.qty} × ${i.name} — ₹${i.price * i.qty}`).join('') +
-  `━━━━━━━━━━━━━━━━━━━━━━` +
+━━━━━━━━━━━━━━━━━━━━━━
 
-  `👤 *CUSTOMER DETAILS*` +
-  `Name: ${encodeURIComponent(name)}` +
-  `Phone: ${phone}` +
+👤 *CUSTOMER DETAILS*
+Name: ${name}
+Phone: ${phone}
 
-  `📍 *DELIVERY ADDRESS*` +
-  `${encodeURIComponent(address)}` +
+📍 *DELIVERY ADDRESS*
+${address}
 
-  `🗺️ *GOOGLE MAP LOCATION*` +
-  `${encodeURIComponent(mapsUrl)}` +
+🗺️ *GOOGLE MAP LOCATION*
+${mapsUrl}
 
-  `━━━━━━━━━━━━━━━━━━━━━━` +
+━━━━━━━━━━━━━━━━━━━━━━
 
-  `💳 *PAYMENT STATUS:* PENDING` +
-  `UPI ID: 7297810859@slc` +
-  `Account Name: MR SUNIL KUMAR MEHTA ` +
+💳 *PAYMENT STATUS:* PENDING
+UPI ID: 7297810859@slc
+Account Name: MR SUNIL KUMAR MEHTA
 
-  `🔗 *PAY VIA UPI*` +
-  `upi://pay?pa=7297810859@slc&pn=SUNIL&am=${totalAmount}` +
+🔗 *PAY VIA UPI*
+upi://pay?pa=7297810859@slc&pn=SUNIL&am=${totalAmount}
 
-  `✅ *Please complete the payment and reply with the payment screenshot to confirm your order.*`;
+✅ *Please complete the payment and reply with the payment screenshot to confirm your order.*`;
 
 
     
     // 4. Send order details to WhatsApp
-    console.log("📱 Building WhatsApp message...");
-    console.log("📦 Total Amount:", totalAmount);
-    console.log("📋 Order Note Length:", orderNote.length);
-    
     const whatsappMessage = `https://wa.me/917297810859?text=${encodeURIComponent(orderNote)}`;
-    
-    console.log("🔗 WhatsApp URL Ready");
-    console.log("📤 Opening WhatsApp...");
     
     // 5. Open WhatsApp first with the message
     window.open(whatsappMessage, '_blank');
-    
-    console.log("✅ WhatsApp window opened");
     
     // 6. Show success toast
     showToast('✅ Order sent to WhatsApp! Opening payment link...', 'success');
