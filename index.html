@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hype</title>
     
-    <meta name="description" content="NEXUS: Premium Curations. Artisanal Samosas, Gourmet Cakes, & Exclusive Events. Instant Delivery. Premium Quality Guaranteed.">
-    <meta property="og:title" content="NEXUS | Premium Curations Platform">
+    <meta name="description" content="Hype: Premium Curations. Artisanal Samosas, Gourmet Cakes, & Exclusive Events. Instant Delivery. Premium Quality Guaranteed.">
+    <meta property="og:title" content="Hype | Premium Curations Platform">
     <meta property="og:image" content="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=80">
     <meta name="theme-color" content="#d4af37">
 
@@ -197,14 +197,18 @@
                             <option value="LPU_LAW_GATE_2">LPU Law gate 2</option>
                             <option value="PHAGWARA">Phagwara</option>
                             <option value="JALANDHAR">Jalandhar</option>
-                            
+                            <option value="CUSTOM">📍 Share Current Location</option>
                         </select>
                     </div>
                     <div class="input-group">
                         <input type="text" id="cust-room" placeholder=" " required>
-                        <label>Location.</label>
+                        <label>Location / Coordinates</label>
                     </div>
                 </div>
+                <button type="button" class="btn-location-share" onclick="shareCurrentLocation()" style="width: 100%; margin-top: 10px; padding: 12px; background: linear-gradient(135deg, #d4af37, #f59e0b); color: #000; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem;">
+                    <i data-lucide="map-pin" size="16"></i> Share My Current Location
+                </button>
+                <div id="location-status" style="margin-top: 8px; font-size: 0.8rem; color: #888; text-align: center;"></div>
             </div>
     
             <div class="cart-footer">
@@ -364,7 +368,7 @@
                         <p class="menu-desc">The classic Kota filling with hing & spices. Served with green chutney.</p>
                         <div class="menu-footer">
                             <span class="menu-price">₹15</span>
-                            <button class="btn-add" onclick="addToCart('Spicy Samosa', 0.001)">ADD +</button>
+                            <button class="btn-add" onclick="addToCart('Spicy Samosa', 15)">ADD +</button>
                         </div>
                     </div>
                 </div>
@@ -1184,7 +1188,7 @@
         </div>
 
         <div class="copyright">
-            <p>&copy; 2025 Home-Dome Ventures. All systems nominal.</p>
+            <p>&copy; 2025 Hype Ventures. All systems nominal.</p>
         </div>
     </footer>
 

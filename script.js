@@ -1,10 +1,8 @@
 /* =========================================
    1. SYSTEM INITIALIZATION & CONFIG
    ========================================= */
-// Initialize Lucide Icons
-if (typeof lucide !== 'undefined') {
-    lucide.createIcons();
-}
+// Initialize emoji icon system
+// (Lucide icons are replaced with emojis via data-lucide attributes)
 
 // Project Database
 const projects = {
@@ -257,7 +255,6 @@ function updateCartUI() {
                 <i data-lucide="shopping-cart" size="40" style="opacity:0.5; margin-bottom:10px;"></i>
                 <p>Your bag is empty.</p>
             </div>`;
-        lucide.createIcons(); // Re-render icons
         return;
     }
 
@@ -347,7 +344,7 @@ function processPayment() {
         "key": "rzp_live_SARkNvIniIehhW", 
         "amount": totalAmount * 100, // Amount is in paise (₹1 = 100 paise)
         "currency": "INR",
-        "name": "Home-Dome",
+        "name": "Hype",
         "description": "Snack Order - ₹" + totalAmount,
         "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=200&q=80",
         "handler": function (response){
@@ -514,4 +511,91 @@ function copyCode() {
     }).catch(err => {
         console.error('Failed to copy: ', err);
     });
+}
+
+/* =========================================
+   GEOLOCATION SYSTEM - Share Current Location
+   ========================================= */
+function shareCurrentLocation() {
+    const statusDiv = document.getElementById('location-status');
+    const roomInput = document.getElementById('cust-room');
+    const hostelSelect = document.getElementById('cust-hostel');
+    
+    if (!navigator.geolocation) {
+        statusDiv.innerHTML = "❌ Geolocation not supported on this device";
+        statusDiv.style.color = "#ef4444";
+        showToast("Geolocation not supported");
+        return;
+    }
+    
+    statusDiv.innerHTML = "📍 Getting your location...";
+    statusDiv.style.color = "#d4af37";
+    
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const { latitude, longitude, accuracy } = position.coords;
+            const coordsText = `${latitude.toFixed(6)}, ${longitude.toFixed(6)} (Accuracy: ${Math.round(accuracy)}m)`;
+            
+            roomInput.value = coordsText;
+            hostelSelect.value = "CUSTOM";
+            
+            statusDiv.innerHTML = `✅ Location captured! Accuracy: ${Math.round(accuracy)}m`;
+            statusDiv.style.color = "#10b981";
+            
+            console.log("📍 Geolocation Data:", {
+                latitude: latitude.toFixed(6),
+                longitude: longitude.toFixed(6),
+                accuracy: Math.round(accuracy),
+                timestamp: new Date().toLocaleString()
+            });
+            
+            showToast("📍 Location captured successfully!");
+            
+            // Optional: Get reverse geocoding info (requires API)
+            getReverseGeocodeInfo(latitude, longitude);
+        },
+        (error) => {
+            let errorMsg = "";
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMsg = "❌ Permission denied. Enable location in settings.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMsg = "❌ Location unavailable. Try again.";
+                    break;
+                case error.TIMEOUT:
+                    errorMsg = "❌ Location request timeout.";
+                    break;
+                default:
+                    errorMsg = "❌ Error getting location.";
+            }
+            statusDiv.innerHTML = errorMsg;
+            statusDiv.style.color = "#ef4444";
+            showToast(errorMsg);
+            console.error("Geolocation Error:", error);
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+    );
+}
+
+// Get readable location name from coordinates (using OpenStreetMap Nominatim - free)
+function getReverseGeocodeInfo(lat, lng) {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+    
+    fetch(url, {
+        headers: { 'Accept-Language': 'en' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.address) {
+            const address = data.address;
+            const placeName = address.neighbourhood || address.suburb || address.village || address.town || address.city || "Location";
+            console.log("📍 Reverse Geocode:", placeName, address);
+        }
+    })
+    .catch(err => console.error("Reverse geocoding error:", err));
 }
