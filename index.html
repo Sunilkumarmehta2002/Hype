@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hype</title>
+    
+    <meta name="description" content="NEXUS: Premium Curations. Artisanal Samosas, Gourmet Cakes, & Exclusive Events. Instant Delivery. Premium Quality Guaranteed.">
+    <meta property="og:title" content="NEXUS | Premium Curations Platform">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=80">
+    <meta name="theme-color" content="#d4af37">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&family=Playfair+Display:wght@700;800;900&family=Sora:wght@600;700&family=Montserrat:wght@600;700;800&family=Bebas+Neue&family=Abril+Fatface&display=swap" rel="stylesheet">
+    
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <!-- Emoji Icon Fallback System (Replaces Lucide to prevent tracking warnings) -->
+    <script>
+        const iconMap = {
+            'zap': '⚡', 'gift': '🎁', 'utensils': '🍴', 'soup': '🍲', 'package': '📦', 'cake': '🍰',
+            'flame': '🔥', 'trending-up': '📈', 'message-square': '💬', 'shopping-bag': '🛍️',
+            'map-pin': '📍', 'external-link': '🔗', 'check-circle': '✅', 'circle': '⭕',
+            'users': '👥', 'banknote': '💵', 'crown': '👑', 'file-check': '✔️',
+            'message-circle': '📞', 'smartphone': '📱', 'download': '⬇️', 'apple': '🍎',
+            'alert-triangle': '⚠️', 'radio': '📻', 'activity': '💓', 'shield-check': '🛡️',
+            'ticket': '🎟️', 'percent': '💯', 'share-2': '🔄', 'clock': '⏰',
+            'truck': '🚚', 'bell': '🔔', 'copy': '📋'
+        };
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-lucide]').forEach(el => {
+                const iconName = el.getAttribute('data-lucide');
+                const emoji = iconMap[iconName] || '•';
+                el.textContent = emoji;
+                el.style.fontSize = '1.2em';
+                el.style.display = 'inline-block';
+            });
+        });
+    </script>
+    
+    <!-- Debug Console for Mobile Testing -->
+    <script>
+        console.log("Page Loaded - Checking Payment Systems");
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                console.log("Razorpay Available:", typeof Razorpay !== 'undefined');
+                console.log("Cart System Ready:", typeof cart !== 'undefined');
+                console.log("processPayment Function Ready:", typeof processPayment === 'function');
+            }, 1000);
+        });
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+
+
+    <!-- <div id="unified-modal" class="promo-overlay">
+    <div class="promo-card">
+        <button class="close-promo" onclick="closeUnifiedModal()">×</button>
+        
+        <div class="promo-icon-box">
+            <i data-lucide="gift" size="32"></i>
+        </div> -->
+        <!-- <h3 class="rajdhani">WELCOME GIFT UNLOCKED</h3>
+        <p>Get flat <strong>10% OFF</strong> on your first order.</p> -->
+        
+        <!-- <div class="coupon-section" style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px dashed var(--accent); margin-bottom: 20px;">
+            <div style="font-size: 0.75rem; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Tap to copy code</div>
+            <div class="coupon-box" onclick="copyCode()" style="margin-bottom: 5px;">
+                <span id="coupon-text">WELCOME10</span>
+                <i data-lucide="copy" size="16"></i>
+            </div>
+            <div id="copy-feedback" style="margin-bottom: 0;"></div>
+        </div> -->
+
+        <!-- <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; margin-top: 10px;">
+            <p style="font-size: 0.9rem; color: #fff; margin-bottom: 15px; display:flex; align-items:center; justify-content:center; gap:8px;">
+                <i data-lucide="zap" size="16" style="color:var(--accent); fill:var(--accent);"></i>
+                <strong>Want Better Experience?</strong>
+            </p>
+            
+            <a href="https://median.co/share/lppardl#apk" target="_blank" class="btn-claim" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i data-lucide="smartphone" size="20"></i> INSTALL APP
+            </a>
+            
+            <div style="font-size: 0.7rem; color: #555; margin-top: 10px; text-transform: uppercase;">
+                Secure Android Download • v1.0.4
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<!-- <div id="promo-modal" class="promo-overlay">
+    <div class="promo-card">
+        <button class="close-promo" onclick="closePromo()">×</button>
+        <div class="promo-icon-box">
+            <i data-lucide="gift" size="32"></i>
+        </div>
+        <h3 class="rajdhani">WELCOME GIFT</h3>
+        <p>Get flat <strong>10% OFF</strong> on your first instant order today.</p>
+        
+        <div class="coupon-box" onclick="copyCode()">
+            <span id="coupon-text">WELCOME10</span>
+            <i data-lucide="copy" size="16"></i>
+        </div>
+        <div id="copy-feedback">Click to Copy</div>
+
+        <button class="btn-claim" onclick="closePromo()">START ORDERING</button>
+    </div>
+</div>
+
+
+
+
+    <div id="app-modal" class="app-modal-overlay">
+        <div class="app-modal">
+            <button class="app-close" onclick="closeAppModal()">×</button>
+            <div class="icon-pulse-wrapper">
+                <div class="icon-pulse-circle"></div>
+                <div style="width: 70px; height: 70px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent); border: 1px solid var(--accent);">
+                    <i data-lucide="smartphone" size="36"></i>
+                </div>
+            </div>
+            <h3 class="rajdhani" style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #fff;">SYSTEM UPGRADE</h3>
+            <p style="color: #bbb; font-size: 0.95rem; line-height: 1.5; margin-bottom: 0.5rem;">
+                The web is good. The app is <strong>faster</strong>.
+            </p>
+            <ul style="text-align: left; list-style: none; margin: 1.5rem 0 0 1rem; font-size: 0.9rem; color: #888;">
+                <li style="margin-bottom: 8px; display:flex; align-items:center; gap:10px;"><i data-lucide="zap" size="14" style="color:var(--accent)"></i> Exclusive Flash Sales</li>
+                <li style="margin-bottom: 8px; display:flex; align-items:center; gap:10px;"><i data-lucide="clock" size="14" style="color:var(--accent)"></i> Order Tracking</li>
+                <li style="display:flex; align-items:center; gap:10px;"><i data-lucide="percent" size="14" style="color:var(--accent)"></i> App-only Coupons</li>
+            </ul>
+            <a href="https://median.co/share/lppardl#apk" target="_blank" class="btn-app-dl">
+                <i data-lucide="download" size="22"></i> INSTALL APP
+            </a>
+            <div style="margin-top: 1.2rem; font-size: 0.7rem; color: #555; text-transform: uppercase; letter-spacing: 1px;">
+                Secure Download • Version 1.0.4
+            </div>
+        </div>
+    </div> -->
+
+    <div id="secret-counter" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:rgba(0,0,0,0.95); border:2px solid #0f0; padding:20px; z-index:9999; border-radius:10px; text-align:center; font-family:'Orbitron'; box-shadow: 0 0 30px #0f0;">
+        <div style="color:#0f0; font-size:1.5rem; margin-bottom:10px;">ADMIN CONSOLE</div>
+        <div style="color:#fff; font-size:0.8rem;">TOTAL PAGE VIEWS</div>
+        <div id="view-count-val" style="color:#0f0; font-size:3rem; font-weight:bold;">Loading...</div>
+        <div style="margin-top:10px; color:#555; font-size:0.7rem;">SYSTEM_SECURE</div>
+    </div>
+
+    <div class="bg-canvas" id="dynamic-bg"></div>
+
+    <div class="cart-float" onclick="toggleCart()">
+        <div class="cart-count-badge" id="cart-count">0</div>
+        <i data-lucide="shopping-bag" size="24"></i>
+    </div>
+
+    <div class="cart-modal-overlay" id="cart-modal">
+        <div class="cart-modal">
+            <div class="cart-header">
+                <h3 class="rajdhani">YOUR ORDER</h3>
+                <button class="close-cart" onclick="toggleCart()">×</button>
+            </div>
+    
+            <div class="cart-body" id="cart-items-container">
+                <div class="empty-cart-msg">Your cart is empty. add some snacks!</div>
+            </div>
+    
+            <div class="cart-summary">
+                <div class="summary-row" style="padding: 0 20px; display:flex; justify-content:space-between; font-weight:bold; color:var(--accent);">
+                    <span>Total Amount</span> <span id="cart-total">₹0</span>
+                </div>
+            </div>
+    
+            <div class="checkout-form">
+                <h4 class="rajdhani" style="margin-bottom:15px; color:#fff; display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="map-pin" size="16"></i> DELIVERY DETAILS
+                </h4>
+                <div class="input-group">
+                    <input type="text" id="cust-name" placeholder=" " required>
+                    <label>Full Name</label>
+                </div>
+                <div class="input-group">
+                    <input type="tel" id="cust-phone" placeholder=" " required>
+                    <label>Phone Number (WhatsApp)</label>
+                </div>
+                <div class="row-inputs">
+                    <div class="input-group">
+                        <select id="cust-hostel">
+                            <option value="" disabled selected>Select Location</option>
+                            <option value="LAW_GATE">Law Gate </option>
+                            <option value="LPU_MAIN_GATE_1">LPU Main gate 1</option>
+                            <option value="LPU_LAW_GATE_2">LPU Law gate 2</option>
+                            <option value="PHAGWARA">Phagwara</option>
+                            <option value="JALANDHAR">Jalandhar</option>
+                            
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="cust-room" placeholder=" " required>
+                        <label>Location.</label>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="cart-footer">
+                <!-- <button class="btn-pay" onclick="processPayment()"> -->
+                <button class="btn-pay" >
+                    <span>Total Amount</span>
+                    <span id="btn-pay-amt">₹0</span>
+                </button>
+                <div style="display: flex; gap: 10px; margin-top: 12px; align-items: center;">
+                    <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.2);"></div>
+                    <!-- <span style="font-size: 0.75rem; color: #888; text-transform: uppercase;">OR</span> -->
+                    <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.2);"></div>
+                </div>
+                <button class="btn-pay-alternative" onclick="openRazorpayLink()" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px;">
+                    <i data-lucide="external-link" size="16"></i>
+                    <span>PAY VIA WhatsApp</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/917297810859?text=Hi%20Hype,%20I%20am%20excited%20about%20the%20launch" class="whatsapp-float">
+        <i data-lucide="message-circle" size="28"></i>
+    </a>
+
+    <div class="live-ticker" id="ticker">
+        <div class="pulse-dot"></div>
+        <span id="ticker-text">Loading network activity...</span>
+    </div>
+    <div id="toast-box"><i data-lucide="bell" size="18"></i> <span id="toast-msg">Notification</span></div>
+
+    <nav>
+         <div class="brand"><i data-lucide="zap"></i><span>HYPE</span></div>
+         <div style="font-size: 0.65rem; letter-spacing: 1px; color: #d4af37; opacity: 0.8; margin-left: 8px;">by PROVERTOS</div>
+        <div class="nav-right">
+            <a onclick="activateView('invest')" class="btn-header"><i data-lucide="trending-up" size="14"></i>INVESTORS</a>
+            <a onclick="activateView('feedback')" class="btn-header"><i data-lucide="message-square" size="14"></i> SYSTEM</a>
+        </div>
+    </nav>
+
+    <div class="project-dock">
+        <div class="dock-item active" onclick="activateView('p1')" id="tab-p1"><i data-lucide="flame"></i> <span>SNACKS</span></div>
+        <div class="dock-item" onclick="activateView('p2')" id="tab-p2"><i data-lucide="cake"></i> <span>CAKES</span></div>
+        <div class="dock-item" onclick="activateView('p5')" id="tab-p5"><i data-lucide="users"></i> <span>PARTNER</span></div>
+        <div class="dock-item" onclick="activateView('p3')" id="tab-p3"><i data-lucide="ticket"></i> <span>EVENTS</span></div>
+        <div class="dock-item" onclick="activateView('invest')" id="tab-invest"><i data-lucide="trending-up"></i> <span>INVEST</span></div>
+        <div class="dock-item" onclick="activateView('feedback')" id="tab-feedback"><i data-lucide="message-square"></i> <span>FEEDBACK</span></div>
+    </div>
+
+    <div class="hero">
+        <div class="view-container">
+            <div class="hero-badge rajdhani" id="hero-badge" style="background: var(--good); color: #000;">STATUS: LIVE</div>
+            <h1 id="hero-title">BEST Snacks/Food OF<span id="hero-highlight"> LAWGATE / LPU</span></h1>
+            
+            <div class="steps-container">
+                <div class="step-chip"><span class="step-num">1</span> Choose Item</div>
+                <div class="step-chip"><span class="step-num">2</span> Add To Cart</div>
+                <div class="step-chip"><span class="step-num">3</span> Pay UPI</div>
+                <div class="step-chip"><span class="step-num">4</span> ⚡ Instant Delivery</div>
+            </div>
+
+            <div class="ny-card">
+                <div class="sparkle s1">✨</div>
+                <div class="sparkle s2">✨</div>
+                <div class="sparkle s3">✦</div>
+                
+                <h2 class="partner-logo">PARTNERED WITH<br><span style="color: #d4af37; font-size: 2.5rem;">LITTLE CHEF CAFE</span></h2>
+                <p class="ny-subtitle">Premium Culinary Experience. Crafted with Care.</p>
+                
+                <div class="ny-badge">
+                    <i data-lucide="zap" size="20" style="fill: #10b981;"></i> 
+                    <span>INSTANT ORDERING IS LIVE</span>
+                </div>
+            </div>
+            </div>
+    </div>
+
+    <div class="trust-grid">
+        <div class="trust-card founder">
+            <div class="trust-icon" style="color:var(--accent)"><i data-lucide="radio" size="28"></i></div>
+            <h3 class="trust-title">FOUNDER'S LOG <span style="font-size:0.7rem; background:#333; padding:2px 6px;">LIVE UPDATE</span></h3>
+            <p class="trust-desc">
+                "In the freezing Punjab winter, why wait? We are <strong>HYPE by Provertos</strong>.
+                <br><br>
+                <strong>SYSTEM NOTICE:</strong> The pre-order wait is over. 
+                <br>We are now accepting <strong>INSTANT ORDERS</strong>. You order, we cook, we deliver.
+            </p>
+            <div class="signature">Founder & Ceo</div>
+        </div>
+
+        <div class="trust-card premium-unified">
+            <div class="unified-header">
+                <div class="unified-icon-pair">
+                    <div class="trust-icon" style="color:#2dd4a4"><i data-lucide="activity" size="24"></i></div>
+                    <div class="trust-icon" style="color:#60a5fa"><i data-lucide="shield-check" size="24"></i></div>
+                </div>
+                <h3 class="trust-title unified-title">CONSISTENCY & LOYALTY PROMISE</h3>
+            </div>
+
+            <div class="unified-content">
+                <div class="unified-section">
+                    <h4 class="section-subtitle" style="color:#2dd4a4">✓ CONSISTENCY CHECK</h4>
+                    <p class="trust-desc">
+                        "Unlike Delhi's AQI which fluctuates daily, our quality is a flat line at 100%. Authentic taste, zero fluctuation. Pure Hygiene."
+                    </p>
+                    <div class="aqi-bar">
+                        <div class="aqi-box bad"><span class="aqi-val">450+</span><span style="font-size:0.6rem; font-weight:bold;">AQI (BAD)</span></div>
+                        <div class="aqi-box good"><span class="aqi-val">100%</span><span style="font-size:0.6rem; font-weight:bold;">US (GOOD)</span></div>
+                    </div>
+                </div>
+
+                <div class="divider-vertical"></div>
+
+                <div class="unified-section">
+                    <h4 class="section-subtitle" style="color:#60a5fa">✓ LOYALTY PROMISE</h4>
+                    <p class="trust-desc">
+                        <strong>"Messi might have left you, but we won't."</strong><br>
+                        No stadium prices. No hidden fees. We are loyal to those who support us from day one.
+                    </p>
+                    <div class="meme-captions-unified">
+                        <div class="meme-caption meme-beta">🔥 LE BETA HYPE KA KHANA KHAYEGA</div>
+                        <div class="meme-caption meme-civic">💚 We have 100% CIVIC SENSE 😎</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="view-container">
+        
+        <div id="p1" class="view-panel active">
+            <div class="menu-toggle-section" style="margin-bottom: 2rem;">
+                <button class="menu-toggle-btn active" onclick="toggleMenuType('snacks', this)">
+                    <i data-lucide="utensils" size="18"></i> SNACKS
+                </button>
+                <button class="menu-toggle-btn" onclick="toggleMenuType('thali', this)">
+                    <i data-lucide="soup" size="18"></i> THALI
+                </button>
+                <button class="menu-toggle-btn" onclick="toggleMenuType('bulk', this)">
+                    <i data-lucide="zap" size="18"></i> FAST DEALS
+                </button>
+                <button class="menu-toggle-btn" onclick="toggleMenuType('cakes', this)">
+                    <i data-lucide="cake" size="18"></i> CAKES
+                </button>
+            </div>
+
+            <div id="snacks-menu" class="menu-section active">
+                <h2 class="rajdhani" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">THE WINTER MENU</h2>
+                <div class="grid-3">
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                        <div class="menu-badge">KOTA SPECIAL</div>
+                        <div class="menu-badge" style="background:#ef4444; top: 40px;">🔥 BEST SELLER</div>
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Spicy Samosa</div>
+                        <p class="menu-desc">The classic Kota filling with hing & spices. Served with green chutney.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹15</span>
+                            <button class="btn-add" onclick="addToCart('Spicy Samosa', 15)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://tse2.mm.bing.net/th/id/OIP.XEj4U4TkY6Zoty6NpiC4twHaFK?cb=ucfimg2&ucfimg=1&w=750&h=523&rs=1&pid=ImgDetMain&o=7&rm=3" class="menu-img">
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Khasta Kachori</div>
+                        <div class="menu-badge">KOTA SPECIAL</div>
+                        <p class="menu-desc">Crispy, flaky, and stuffed with spicy moong dal filling.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹25</span>
+                            <button class="btn-add" onclick="addToCart('Khasta Kachori', 25)">ADD +</button>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://foodtasted.org/wp-content/uploads/2019/05/Batata-vada-1024x740.jpg" class="menu-img">
+                        <div class="menu-badge" style="background:#ef4444;">🔥 BEST SELLER</div>
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Aloo Vada</div>
+                        <p class="menu-desc">Mumbai style potato fritter. Hot and fulfilling.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹25</span>
+                            <button class="btn-add" onclick="addToCart('Aloo Vada', 25)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://purendesi.in/wp-content/uploads/2024/06/Bread-pakoda-recipe-1024x1024.jpg" class="menu-img">
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Bread Pakoda</div>
+                        <p class="menu-desc">Stuffed with spicy potato mix, deep fried to golden perfection.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹30</span>
+                            <button class="btn-add" onclick="addToCart('Bread Pakoda', 30)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://priyakitchenette.com/wp-content/uploads/2020/09/moong-dal-pakoda-500x500.jpg" class="menu-img">
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Mix Pakoda Plate</div>
+                        <p class="menu-desc">Onion, Gobhi, and Palak pakodas. Perfect for winter evenings.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹50</span>
+                            <button class="btn-add" onclick="addToCart('Mix Pakoda Plate', 50)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Desi Veg Burger</div>
+                        <p class="menu-desc">Crispy aloo tikki, fresh onions, tomatoes and special sauce.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹60</span>
+                            <button class="btn-add" onclick="addToCart('Desi Veg Burger', 60)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Grilled Sandwich</div>
+                        <p class="menu-desc">Loaded with veggies and grilled until crispy.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹70</span>
+                            <button class="btn-add" onclick="addToCart('Grilled Sandwich', 70)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                        <div class="menu-badge" style="background:#ef4444;">🔥 BEST SELLER</div>
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Cheese Pizza (6")</div>
+                        <p class="menu-desc">Loaded with mozzarella and liquid cheese blend.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹149</span>
+                            <button class="btn-add" onclick="addToCart('Cheese Pizza 6in', 149)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" style="border: 1px solid var(--accent); box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                        <div class="menu-badge" style="background:var(--accent); color:black;">MEGA DEAL</div>
+                        <div class="menu-badge" style="background:#ef4444; top: 40px;">🔥 BEST SELLER</div>
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">THE WINTER COMBO</div>
+                            <p class="menu-desc">1 Samosa + 1 Bread Pakoda + 1 Burger. Ultimate survival kit.</p>
+                            <div class="menu-footer">
+                            <span class="menu-price">₹99</span>
+                            <button class="btn-add" onclick="addToCart('Winter Survival Combo', 111)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-terminal">
+                <div class="window-schedule" id="countdown-label" style="border-color: var(--good); background: rgba(16, 185, 129, 0.1); color: var(--good);">
+                    <i data-lucide="zap" size="18"></i> SYSTEM UPDATE: INSTANT DELIVERY MODE ENABLED
+                </div> 
+
+                <div class="action-btn-container">
+                    <a href="https://wa.me/917297810859?text=Hi%20HYPE%2C%20I%20have%20an%20issue%20with%20my%20order." target="_blank" class="action-btn btn-whatsapp-trigger" style="width: 100%;">
+                        <i data-lucide="message-circle" size="20"></i> CONTACT SUPPORT (WHATSAPP)
+                    </a>
+
+                    <div class="terminal-header"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><span style="font-size:0.7rem; color:#aaa;">INSTANT_ORDER_UPLINK.exe</span></div>
+                <!-- <iframe id="snack-form-frame" class="form-embed" src="https://xzekniku.formester.com/f/7MoDlvgwd"></iframe> -->
+                </div>
+                
+                <div class="community-box" style="margin-bottom: 3rem;">
+                    <div style="background: linear-gradient(45deg, #112a1d, #081d18); border-radius: 12px; padding: 2rem; text-align: center; border: 1px solid #25D366; box-shadow: 0 0 20px rgba(37, 211, 102, 0.1);">
+                        <h3 class="rajdhani" style="color:white; margin-bottom:0.5rem; font-size: 1.5rem;">JOIN THE INNER CIRCLE</h3>
+                        <p style="color:#aaa; font-size:0.9rem; margin-bottom:1.5rem;">
+                            Get Flash Sale alerts, Exclusive Coupons, and Event Updates before everyone else.
+                        </p>
+                        <a href="https://chat.whatsapp.com/FXBdH9nQBoWL5dywmBs2oc" target="_blank" style="background: #25D366; color: #000; border: none; padding: 12px 30px; font-weight: 800; border-radius: 50px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-family: 'Rajdhani'; letter-spacing: 1px; transition: transform 0.2s;">
+                            <i data-lucide="users" size="18"></i> JOIN WHATSAPP GROUP
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem;">
+                <h3 class="rajdhani" style="margin-bottom: 1rem;">FAQ</h3>
+                <div class="faq-item" onclick="this.classList.toggle('open')">
+                    <div class="faq-question">What is the delivery time? <span>+</span></div>
+                    <div class="faq-answer">We are now in Instant Mode. Typically 20-30 minutes for hot snacks.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('open')">
+                    <div class="faq-question">Do you deliver to hostel rooms? <span>+</span></div>
+                    <div class="faq-answer">For Zone B (Bulk), we deliver to the hostel gate. For Zone A, pickup is at Law Gate main point.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('open')">
+                    <div class="faq-question">Are the samosas fresh? <span>+</span></div>
+                    <div class="faq-answer">Yes! We fry continuously to ensure every order is served hot.</div>
+                </div>
+            </div>
+            </div>
+
+            <div id="cakes-menu" class="menu-section">
+                <div style="background: linear-gradient(to right, rgba(236, 72, 153, 0.1), transparent); border-left: 4px solid #ec4899; padding: 1.5rem; margin-bottom: 2rem; border-radius: 0 8px 8px 0;">
+                    <h3 class="rajdhani" style="color: #ec4899; margin-bottom: 0.5rem;">🍰 ALL CAKES AVAILABLE - JUST ASK!</h3>
+                    <p style="color: #ccc; font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.6;">
+                        We have ALL types of cakes available! Vanilla, Chocolate, Strawberry, Black Forest, Butterscotch, Carrot, Cheesecake, Red Velvet, and more! Just WhatsApp or fill the form below for availability confirmation and to customize your perfect cake.
+                    </p>
+                    <ul class="info-list" style="margin-bottom: 0;">
+                        <li><i data-lucide="gift" size="18" style="color:#ec4899"></i> <strong>Perfect For:</strong> Birthdays, Celebrations, Special Moments, Weddings & Events.</li>
+                        <li><i data-lucide="check-circle" size="18" style="color:#ec4899"></i> <strong>Order 1 Day (24 Hours) in Advance:</strong> WhatsApp for flavor, size, design & availability confirmation.</li>
+                        <li><i data-lucide="message-circle" size="18" style="color:#ec4899"></i> <strong>Prices:</strong> Starting from ₹599 for 1/2 kg to ₹1299+ for custom designs & larger sizes.</li>
+                    </ul>
+                </div>
+
+                <h2 class="rajdhani" style="border-bottom:1px solid #333; padding-bottom:1rem; margin-bottom:1.5rem;">THE CAKE STUDIO</h2>
+                <div class="grid-3" style="margin-bottom: 3rem;">
+                <div class="menu-card" style="border: 2px solid #ec4899; box-shadow: 0 0 15px rgba(236, 72, 153, 0.2);">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                        <div class="menu-badge" style="background:#ec4899;">ALL-IN-ONE</div>
+                        <div class="menu-badge" style="background:#ef4444; top: 40px;">🔥 BEST SELLER</div>
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Classic Chocolate Dream</div>
+                        <p class="menu-desc">Rich, decadent chocolate cake with smooth frosting. Perfect for any celebration.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹849 (1 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Classic Chocolate Dream', 849)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                        <div class="menu-badge" style="background:#f59e0b; color: black;">HAMMER INCLUDED</div>
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Heart Pinata Cake</div>
+                        <p class="menu-desc">Don't cut it, SMASH it! Hard chocolate shell with cake & chocolates inside. Includes wooden hammer.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹799</span>
+                            <button class="btn-add" onclick="addToCart('Heart Pinata Cake', 799)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                        <div class="menu-badge" style="background:#3b82f6;">CUSTOM IMAGE</div>
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Edible Photo Cake</div>
+                        <p class="menu-desc">Send us your friend's weirdest photo, and we'll print it on the cake. 100% edible sheet.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹999 (1/2 kg)</span>
+                            <a href="#cake-form-frame" style="text-decoration:none;" class="btn-add">CUSTOMIZE</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Death By Chocolate</div>
+                        <p class="menu-desc">Dense, fudge-like dark chocolate cake. No cream, just pure chocolate indulgence.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹799 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Death By Chocolate', 799)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">Red Velvet Heart</div>
+                        <p class="menu-desc">Heart-shaped base with authentic cream cheese frosting. Smooth velvet texture.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹699 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Red Velvet Heart', 699)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" style="border: 1px dashed #fff;">
+                    <div class="menu-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                        <div class="menu-badge" style="background:#ef4444;">PATCH UP KIT</div>
+                    </div>
+                    <div class="menu-body">
+                        <div class="menu-title">The "Sorry" Bento</div>
+                        <p class="menu-desc">Messed up? Send this. Written "I am Sorry" on top with a crying emoji. Works 99% of the time.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹599</span>
+                            <button class="btn-add" onclick="addToCart('Sorry Bento Cake', 599)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="rajdhani" style="border-bottom:1px solid #333; padding-bottom:1rem; margin-bottom:1.5rem; margin-top:2rem;">🎂 ALL CAKE VARIETIES (Click to Add)</h2>
+            <div class="grid-3" style="background: rgba(236, 72, 153, 0.05); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                <div class="menu-card" style="border: 1px solid #ec4899; background: rgba(0,0,0,0.3);">
+                    <div class="menu-body">
+                        <div class="menu-title">Vanilla Cake</div>
+                        <p class="menu-desc">Classic vanilla with buttercream frosting.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹599 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Vanilla Cake', 599)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" style="border: 1px solid #ec4899; background: rgba(0,0,0,0.3);">
+                    <div class="menu-body">
+                        <div class="menu-title">Strawberry Cake</div>
+                        <p class="menu-desc">Fresh strawberries with whipped cream.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹649 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Strawberry Cake', 649)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" style="border: 1px solid #ec4899; background: rgba(0,0,0,0.3);">
+                    <div class="menu-body">
+                        <div class="menu-title">Black Forest</div>
+                        <p class="menu-desc">Chocolate cake with cherries and cream.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹699 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Black Forest Cake', 699)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" style="border: 1px solid #ec4899; background: rgba(0,0,0,0.3);">
+                    <div class="menu-body">
+                        <div class="menu-title">Butterscotch</div>
+                        <p class="menu-desc">Rich butterscotch sauce with chocolate.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹649 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Butterscotch Cake', 649)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" style="border: 1px solid #ec4899; background: rgba(0,0,0,0.3);">
+                    <div class="menu-body">
+                        <div class="menu-title">Carrot Cake</div>
+                        <p class="menu-desc">Moist carrot cake with cream cheese frosting.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹679 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Carrot Cake', 679)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" style="border: 1px solid #ec4899; background: rgba(0,0,0,0.3);">
+                    <div class="menu-body">
+                        <div class="menu-title">Cheese Cake</div>
+                        <p class="menu-desc">Creamy New York style cheesecake.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹749 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Cheese Cake', 749)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" style="border: 1px solid #ec4899; background: rgba(0,0,0,0.3);">
+                    <div class="menu-body">
+                        <div class="menu-title">Mocha Cake</div>
+                        <p class="menu-desc">Coffee and chocolate blend, smooth finish.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹699 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Mocha Cake', 699)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" style="border: 1px solid #ec4899; background: rgba(0,0,0,0.3);">
+                    <div class="menu-body">
+                        <div class="menu-title">Lemon Cake</div>
+                        <p class="menu-desc">Zesty and refreshing, perfect for summer.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹629 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Lemon Cake', 629)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" style="border: 1px solid #ec4899; background: rgba(0,0,0,0.3);">
+                    <div class="menu-body">
+                        <div class="menu-title">Pistachio Cake</div>
+                        <p class="menu-desc">Premium pistachio flavored delicacy.</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">₹749 (1/2 kg)</span>
+                            <button class="btn-add" onclick="addToCart('Pistachio Cake', 749)">ADD +</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-terminal">
+                <h3 class="rajdhani" style="text-align: center; margin-bottom: 1.5rem; color: #ec4899;">READY TO CELEBRATE?</h3>
+                
+                <div class="action-btn-container">
+                    <a href="#cake-form-frame" class="action-btn btn-form-trigger" style="border-color: #ec4899; color: #fff;">
+                        <i data-lucide="cake" size="20"></i> FILL CAKE FORM
+                    </a>
+                    <a href="https://wa.me/917297810859?text=Hi%20HYPE%2C%20I%20want%20to%20discuss%20a%20CUSTOM%20CAKE%20order." target="_blank" class="action-btn btn-whatsapp-trigger">
+                        <i data-lucide="message-circle" size="20"></i> WHATSAPP ORDER
+                    </a>
+                </div>
+                <div class="terminal-header"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><span style="font-size:0.7rem; color:#aaa;">CUSTOM_ORDER_REQ.exe</span></div>
+                
+                <iframe id="cake-form-frame" class="form-embed" src="https://xzekniku.formester.com/f/kjdmZo99l"></iframe>
+            </div>
+            </div>
+
+            <div id="thali-menu" class="menu-section">
+                <div style="background: linear-gradient(to right, rgba(34, 197, 94, 0.1), transparent); border-left: 4px solid #22c55e; padding: 1.5rem; margin-bottom: 2rem; border-radius: 0 8px 8px 0;">
+                    <h3 class="rajdhani" style="color: #22c55e; margin-bottom: 0.5rem;">🍛 AUTHENTIC THALI</h3>
+                    <p style="color: #ccc; font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.6;">
+                        Complete meal satisfaction. Every thali is freshly prepared with authentic ingredients. Choose your favorite sabji and dal combination.
+                    </p>
+                    <ul class="info-list" style="margin-bottom: 0;">
+                        <li><i data-lucide="check-circle" size="18" style="color:#22c55e"></i> <strong>Choose Your Dal:</strong> Dal, Rajma, or Kadi</li>
+                        <li><i data-lucide="clock" size="18" style="color:#22c55e"></i> <strong>Prep Time:</strong> 15-20 minutes for fresh cooking</li>
+                    </ul>
+                </div>
+
+                <h2 class="rajdhani" style="border-bottom:1px solid #333; padding-bottom:1rem; margin-bottom:1.5rem;">🥘 MEAL COMBOS</h2>
+                <div class="grid-3">
+                    <div class="menu-card" style="border: 2px solid #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://img.freepik.com/premium-photo/veg-thali-from-indian-cuisine-food-platter-consists-variety-veggiespaneer-dish-lentils-jeera-riceroti-sweet-dish-onion-etc-selective-focus_726363-860.jpg?w=2000" class="menu-img">
+                            <div class="menu-badge" style="background:#22c55e; color: black;">⭐ POPULAR</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Normal Thali</div>
+                            <p class="menu-desc">1 Sabji + 1 (Dal/Rajma/Kadi) + Rice + 3 Chapati + Salad</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹70</span>
+                                <button class="btn-add" onclick="addToCart('Normal Thali', 70)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 2px solid var(--accent); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://i.pinimg.com/736x/e3/9b/e4/e39be4c21caa35e57341ad5e5aa227e0.jpg" class="menu-img">
+                            <div class="menu-badge" style="background:var(--accent); color: black;">🌟 SPECIAL</div>
+                            <div class="menu-badge" style="background:#ef4444; top: 40px;">🔥 BEST SELLER</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Paneer Special Thali</div>
+                            <p class="menu-desc">1 Paneer + 1 Sabji + 1 (Dal/Rajma/Kadi) + Rice + 3 Chapati + Salad</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹90 <span style="font-size: 0.75rem; color: #888;">(+₹10 for Sweet)</span></span>
+                                <button class="btn-add" onclick="addToCart('Paneer Special Thali', 90)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 2px solid #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://tse1.mm.bing.net/th/id/OIP.8DE6gB_yvLkqxVDtEHFE5QHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" class="menu-img">
+                            <div class="menu-badge" style="background:#f59e0b; color: black;">🥔 COMFORT FOOD</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Aloo Paratha</div>
+                            <p class="menu-desc">Authentic potato-stuffed paratha with butter. Served with yogurt and pickle.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹30</span>
+                                <button class="btn-add" onclick="addToCart('Aloo Paratha', 30)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 2px solid #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://tse1.mm.bing.net/th/id/OIP.WcHvxEViPx07pchLwy97dgHaE7?rs=1&pid=ImgDetMain&o=7&rm=3" class="menu-img">
+                            <div class="menu-badge" style="background:#8b5cf6; color: white;">🧀 PANEER SPECIAL</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Paneer Paratha</div>
+                            <p class="menu-desc">Soft paneer stuffed paratha with butter. Served with yogurt, pickle, and green chutney.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹49</span>
+                                <button class="btn-add" onclick="addToCart('Paneer Paratha', 49)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="rajdhani" style="border-bottom:1px solid #333; padding-bottom:1rem; margin-bottom:1.5rem; margin-top:2rem;">🍮 SWEETS & CHAI</h2>
+                <div class="grid-3">
+                    <div class="menu-card" style="border: 1px solid #ec4899; box-shadow: 0 0 15px rgba(236, 72, 153, 0.15);">
+                        <div class="menu-img-wrap">
+                            <img src="https://recipes.net/wp-content/uploads/2023/05/gulab-jamun-recipe_9fb159dc2674f395436a64666227c988-768x768.jpeg" class="menu-img">
+                            <div class="menu-badge" style="background:#ec4899;">SWEET</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Gulab Jamun</div>
+                            <p class="menu-desc">Soft, fluffy milk solids in warm sugar syrup. Perfect ending to your meal.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹10</span>
+                                <button class="btn-add" onclick="addToCart('Gulab Jamun', 10)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 1px solid #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);">
+                        <div class="menu-img-wrap">
+                            <img src="https://cdn.itsoverflowing.com/wp-content/uploads/2020/02/4-ingredient-Ginger-Tea-.jpg" class="menu-img">
+                            <div class="menu-badge" style="background:#f59e0b; color: black;">HOT BEVERAGE</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Chai (Regular)</div>
+                            <p class="menu-desc">Classic Indian tea. Aromatic, warm, and refreshing.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹20</span>
+                                <button class="btn-add" onclick="addToCart('Chai', 20)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 1px solid #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);">
+                        <div class="menu-img-wrap">
+                            <img src="https://images.slurrp.com/prodrecipe_images/cms/d6ibbdabvdw.webp" class="menu-img">
+                            <div class="menu-badge" style="background:var(--accent); color: black;">🏺 SPECIAL</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Khulad Chai</div>
+                            <p class="menu-desc">Traditional clay-cup chai. Authentic taste, eco-friendly experience.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹25</span>
+                                <button class="btn-add" onclick="addToCart('Khulad Chai', 25)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="rajdhani" style="border-bottom:1px solid #333; padding-bottom:1rem; margin-bottom:1.5rem; margin-top:2rem;">🎯 BULK THALI DEALS (Buy 5 Get 1 FREE)</h2>
+                <div class="grid-3">
+                    <div class="menu-card" style="border: 2px solid #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://img.freepik.com/premium-photo/veg-thali-from-indian-cuisine-food-platter-consists-variety-veggiespaneer-dish-lentils-jeera-riceroti-sweet-dish-onion-etc-selective-focus_726363-860.jpg?w=2000" class="menu-img">
+                            <div class="menu-badge" style="background:#22c55e; color: black;">🥘 BUY 5 GET 1 FREE</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Normal Thali Pack</div>
+                            <p class="menu-desc">Buy 5 Normal Thalis, Get 1 FREE! Complete meal satisfaction.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹350 <span style="font-size: 0.75rem; color: #888;\">(was ₹420)</span></span>
+                                <button class="btn-add" onclick="addToCart('Normal Thali Pack (5+1 FREE)', 350)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 2px solid var(--accent); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://i.pinimg.com/736x/e3/9b/e4/e39be4c21caa35e57341ad5e5aa227e0.jpg" class="menu-img">
+                            <div class="menu-badge" style="background:var(--accent); color: black;">⭐ BUY 5 GET 1 FREE</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Paneer Thali Pack</div>
+                            <p class="menu-desc">Buy 5 Paneer Thalis, Get 1 FREE! Premium protein meal.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹450 <span style="font-size: 0.75rem; color: #888;\">(was ₹540)</span></span>
+                                <button class="btn-add" onclick="addToCart('Paneer Thali Pack (5+1 FREE)', 450)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 2px solid #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://tse1.mm.bing.net/th/id/OIP.8DE6gB_yvLkqxVDtEHFE5QHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" class="menu-img">
+                            <div class="menu-badge" style="background:#f59e0b; color: black;">🥔 BUY 5 GET 1 FREE</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Aloo Paratha Pack</div>
+                            <p class="menu-desc">Buy 5 Aloo Parathas, Get 1 FREE! Comfort food bundle.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹150 <span style="font-size: 0.75rem; color: #888;\">(was ₹180)</span></span>
+                                <button class="btn-add" onclick="addToCart('Aloo Paratha Pack (5+1 FREE)', 150)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bulk-menu" class="menu-section">
+                <div style="background: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #fb923c 100%); padding: 2.5rem; margin-bottom: 2rem; border-radius: 12px; position: relative; overflow: hidden; box-shadow: 0 10px 40px rgba(251, 146, 60, 0.3); border: 2px solid #fbbf24;">
+                    <div style="position: absolute; top: -20px; right: -20px; font-size: 6rem; opacity: 0.1;">⚡</div>
+                    <div style="position: relative; z-index: 1;">
+                        <h3 class="rajdhani" style="color: #fff; margin-bottom: 0.5rem; font-size: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">⚡ FAST DEALS</h3>
+                        <p style="color: #fff; font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.6; font-weight: 500;">
+                            🔥 <strong>HOTTEST OFFERS!</strong> Get 6 items at the price of 5! Order now for instant delivery. Save BIG on group orders!
+                        </p>
+                        <ul class="info-list" style="margin-bottom: 0;">
+                            <li style="color: #fff;"><i data-lucide="zap" size="18" style="color:#fef08a"></i> <strong style="color:#fef08a;">Buy 5 Get 1 FREE:</strong> On every snack & thali item!</li>
+                            <li style="color: #fff;"><i data-lucide="truck" size="18" style="color:#fef08a"></i> <strong style="color:#fef08a;">⚡ Super Fast Delivery:</strong> 15-25 minutes guaranteed!</li>
+                            <li style="color: #fff;"><i data-lucide="users" size="18" style="color:#fef08a"></i> <strong style="color:#fef08a;">Perfect For:</strong> friends Group, Study Buddies, Parties</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="rajdhani" style="border-bottom: 3px solid #fb923c; padding-bottom:1rem; margin-bottom:1.5rem; color: #fb923c; font-size: 1.8rem; text-shadow: 1px 1px 2px rgba(251, 146, 60, 0.2);">⚡ LIGHTNING FAST DEALS - BUY 5 GET 1 FREE</h2>
+                <div class="grid-3">
+                    <div class="menu-card" style="border: 2px solid #fb923c; box-shadow: 0 0 15px rgba(251, 146, 60, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                            <div class="menu-badge" style="background:#fb923c; color: black;">🥔 BUY 5 GET 1 FREE</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Spicy Samosa Pack</div>
+                            <p class="menu-desc">Buy 5 Spicy Samosas, Get 1 FREE! Golden, crispy, and perfect for sharing.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹75 <span style="font-size: 0.75rem; color: #888;">(was ₹90)</span></span>
+                                <button class="btn-add" onclick="addToCart('Samosa Pack (5+1 FREE)', 75)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 2px solid #fb923c; box-shadow: 0 0 15px rgba(251, 146, 60, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://foodtasted.org/wp-content/uploads/2019/05/Batata-vada-1024x740.jpg" class="menu-img">
+                            <div class="menu-badge" style="background:#fb923c; color: black;">🍟 BUY 5 GET 1 FREE</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Aloo Vada Pack</div>
+                            <p class="menu-desc">Buy 5 Aloo Vadas, Get 1 FREE! Hot, fluffy, and utterly delicious.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹125 <span style="font-size: 0.75rem; color: #888;">(was ₹150)</span></span>
+                                <button class="btn-add" onclick="addToCart('Aloo Vada Pack (5+1 FREE)', 125)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 2px solid #fb923c; box-shadow: 0 0 15px rgba(251, 146, 60, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://purendesi.in/wp-content/uploads/2024/06/Bread-pakoda-recipe-1024x1024.jpg" class="menu-img">
+                            <div class="menu-badge" style="background:#fb923c; color: black;">🥘 BUY 5 GET 1 FREE</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Bread Pakoda Pack</div>
+                            <p class="menu-desc">Buy 5 Bread Pakodas, Get 1 FREE! Crispy outside, fluffy inside.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹150 <span style="font-size: 0.75rem; color: #888;">(was ₹180)</span></span>
+                                <button class="btn-add" onclick="addToCart('Bread Pakoda Pack (5+1 FREE)', 150)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 2px solid #fb923c; box-shadow: 0 0 15px rgba(251, 146, 60, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://priyakitchenette.com/wp-content/uploads/2020/09/moong-dal-pakoda-500x500.jpg" class="menu-img">
+                            <div class="menu-badge" style="background:#fb923c; color: black;">🌶️ BUY 5 GET 1 FREE</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Mix Pakoda Pack</div>
+                            <p class="menu-desc">Buy 5 Mix Pakodas, Get 1 FREE! Onion, Gobhi, and Palak varieties.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹250 <span style="font-size: 0.75rem; color: #888;">(was ₹300)</span></span>
+                                <button class="btn-add" onclick="addToCart('Mix Pakoda Pack (5+1 FREE)', 250)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 2px solid #fb923c; box-shadow: 0 0 15px rgba(251, 146, 60, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" class="menu-img">
+                            <div class="menu-badge" style="background:#fb923c; color: black;">🍔 BUY 5 GET 1 FREE</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Desi Veg Burger Pack</div>
+                            <p class="menu-desc">Buy 5 Desi Veg Burgers, Get 1 FREE! Loaded with fresh veggies.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹300 <span style="font-size: 0.75rem; color: #888;">(was ₹360)</span></span>
+                                <button class="btn-add" onclick="addToCart('Desi Burger Pack (5+1 FREE)', 300)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" style="border: 2px solid var(--accent); box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);">
+                        <div class="menu-img-wrap">
+                            <img src="https://wallpaperaccess.com/full/3667860.jpg" class="menu-img">
+                            <div class="menu-badge" style="background:var(--accent); color:black;">⭐ BUY 5 GET 1 FREE</div>
+                        </div>
+                        <div class="menu-body">
+                            <div class="menu-title">Cheese Pizza (6")</div>
+                            <p class="menu-desc">Buy 5 Cheese Pizzas, Get 1 FREE! Delicious cheesy delight.</p>
+                            <div class="menu-footer">
+                                <span class="menu-price">₹745 <span style="font-size: 0.75rem; color: #888;">(was ₹894)</span></span>
+                                <button class="btn-add" onclick="addToCart('Cheese Pizza Pack (5+1 FREE)', 745)">ADD +</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="p3" class="view-panel">
+            <div style="text-align: center; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem;">
+                <div style="font-family: 'Bebas Neue', cursive; font-size: 1.8rem; color: var(--accent); margin-bottom: 1rem; letter-spacing: 2px;">
+                    Partnership Celebration
+                </div>
+                <h1 class="partner-logo-large" style="font-size: 3rem; line-height: 1; margin-bottom: 1rem; background: linear-gradient(to right, #d4af37, #e6c547, #d4af37); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    LITTLE CHEF CAFE
+                </h1>
+                <p style="color: var(--text-muted); font-size: 1rem; max-width: 600px; margin: 0 auto;">
+                    Taste the excellence. <strong style="color: #d4af37;">Premium partnership bringing you the finest culinary creations.</strong> 
+                </p>
+            </div>
+        </div>
+
+        <div id="p5" class="view-panel">
+            <h2 class="rajdhani" style="text-align:center; margin-bottom:1rem;">JOIN THE SYNDICATE</h2>
+            <p style="text-align:center; color:var(--text-muted); margin-bottom:3rem;">
+                Don't just eat the snacks. Own the market. <br>
+                <span style="color:var(--accent); font-weight:bold;">Earn Cash. Gain Clout. Build Empire.</span>
+            </p>
+
+            <div class="trust-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-bottom: 3rem;">
+                <div class="trust-card">
+                    <div class="trust-icon" style="color:#8b5cf6"><i data-lucide="share-2" size="24"></i></div>
+                    <h3 class="trust-title" style="font-size:1rem;">YOUR SECRET WEAPON</h3>
+                    <p class="trust-desc">
+                        Create a custom code (e.g., <strong>"KING10"</strong>). 
+                        It gives your friends <span style="background:#8b5cf6; color:white; padding:0 4px; font-weight:bold;">FLAT 10% OFF</span>. 
+                        They save money, you make money. Win-Win.
+                    </p>
+                </div>
+
+                <div class="trust-card">
+                    <div class="trust-icon" style="color:#10b981"><i data-lucide="banknote" size="24"></i></div>
+                    <h3 class="trust-title" style="font-size:1rem;">WEEKLY PAYOUTS</h3>
+                    <p class="trust-desc">
+                        We don't make you wait. 15% Commission on every order. 
+                        Payouts sent directly to your UPI every Sunday.
+                    </p>
+                </div>
+                
+                <div class="trust-card">
+                    <div class="trust-icon" style="color:#f59e0b"><i data-lucide="crown" size="24"></i></div>
+                    <h3 class="trust-title" style="font-size:1rem;">VIP TREATMENT</h3>
+                    <p class="trust-desc">
+                        Top performers get Backstage Access + Free Entry to the Christmas Ball & NYE Party.
+                    </p>
+                </div>
+
+                <div class="trust-card">
+                    <div class="trust-icon" style="color:#3b82f6"><i data-lucide="file-check" size="24"></i></div>
+                    <h3 class="trust-title" style="font-size:1rem;">RESUME BOOST</h3>
+                    <p class="trust-desc">
+                        Official 'Campus Entrepreneur' Certificate & Letter of Recommendation (LoR) from the Founder.
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-terminal">
+                 <div class="terminal-header"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><span style="font-size:0.7rem; color:#aaa;">PARTNER_APP.exe</span></div>
+                <iframe class="form-embed" src="https://xzekniku.formester.com/f/kaNjsJs8A"></iframe>
+            </div>
+        </div>
+
+        <div id="invest" class="view-panel">
+            <h2 class="rajdhani" style="text-align:center; margin-bottom: 0.5rem;">INNER CIRCLE ACCESS</h2>
+            <p style="text-align:center; color:var(--text-muted); margin-bottom:3rem;">Fuel the next big thing in LPU.</p>
+
+            <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid var(--border);">
+                <h3 class="rajdhani" style="margin-bottom:1.5rem; color:var(--text-main);">THE ROADMAP</h3>
+                <ul class="info-list">
+                    <li><i data-lucide="check-circle" size="16"></i> <strong>Phase 1:</strong> Dominate Law Gate Food Market (Current)</li>
+                    <li><i data-lucide="circle" size="16"></i> <strong>Phase 2:</strong> Expand to BH/GH Hostels (Jan '26)</li>
+                    <li><i data-lucide="circle" size="16"></i> <strong>Phase 3:</strong> The "HYPE" App Launch (Mar '26)</li>
+                </ul>
+                <div style="display:flex; justify-content:space-between; margin-top:2rem; border-top:1px solid #333; padding-top:1rem;">
+                    <div><div style="font-size:0.7rem; color:#888;">MARKET SIZE</div><div style="font-size:1.2rem; font-weight:bold;">30,000+</div></div>
+                    <div><div style="font-size:0.7rem; color:#888;">TARGET ROI</div><div style="font-size:1.2rem; font-weight:bold; color:var(--good);">2.5x</div></div>
+                </div>
+            </div>
+
+            <div class="form-terminal">
+                <div class="terminal-header"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><span style="font-size:0.7rem; color:#aaa;">INVESTOR_DECK_REQ.exe</span></div>
+                <iframe class="form-embed" src=" https://xzekniku.formester.com/f/qRqvtmJFN"></iframe>
+            </div>
+        </div>
+
+        <div id="feedback" class="view-panel">
+            <h2 class="rajdhani" style="color:var(--text-muted); margin-bottom:1rem; text-align:center;">SYSTEM DIAGNOSTICS</h2>
+            <p style="color:#ccc; font-size:0.9rem; margin-bottom:1rem; text-align:center;">Found a bug? Want a new dish? Tell the Founder directly.</p>
+            
+            <div class="form-terminal" style="margin-top:1rem;">
+                <div class="terminal-header"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div><span style="font-size:0.7rem; color:#aaa;">FEEDBACK_UPLINK.exe</span></div>
+
+                <iframe class="form-embed" src="https://xzekniku.formester.com/f/EnvwRzvok" style="height:600px;"></iframe>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="brand" style="margin-bottom:0.5rem;"><i data-lucide="zap"></i><span>HYPE</span></div>
+                <div style="font-size: 0.7rem; letter-spacing: 1px; color: #d4af37; opacity: 0.7; margin-bottom: 1.5rem;">by PROVERTOS</div>
+                <p style="margin-bottom:1rem; line-height:1.6;">
+                    The authentic taste of Kota, delivered to your hostel doorstep. 
+                    <br>Built by students, for students.
+                </p>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="width:8px; height:8px; background:var(--good); border-radius:50%; display:inline-block;"></span>
+                    <span style="font-size:0.8rem; font-weight:700; color:var(--text-main);">OPERATIONAL</span>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>QUICK LINKS</h4>
+                <a href="#" onclick="activateView('p1')" class="footer-link">Winter Menu</a>
+                <a href="#" onclick="activateView('p2')" class="footer-link">Cake Studio</a>
+                <a href="#" onclick="activateView('p5')" class="footer-link">Partner Program</a>
+                <a href="#" onclick="activateView('invest')" class="footer-link">Investors</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>GET THE APP</h4>
+                <div class="app-btn-group">
+                    <a href="https://median.co/share/lppardl#androidphone" target="_blank" class="app-btn-footer android">
+                        <i data-lucide="smartphone" size="18"></i> 
+                        <div>
+                            <div style="font-size:0.7rem; line-height:1;">Download for</div>
+                            <div>Android</div>
+                        </div>
+                    </a>
+                    <div class="app-btn-footer ios">
+                        <i data-lucide="apple" size="18"></i> 
+                        <div>
+                            <div style="font-size:0.7rem; line-height:1;">Coming Soon</div>
+                            <div>iOS Store</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2025 Home-Dome Ventures. All systems nominal.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
