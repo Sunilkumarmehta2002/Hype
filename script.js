@@ -8,7 +8,7 @@
 const projects = {
     'p1': { 
         color: '#f59e0b', // Amber
-        title: 'BEST SNACKS OF<span style="color:#f59e0b"> LAWGATE // LPU</span>', 
+        title: 'BEST FOOD OF<span style="color:#f59e0b"> LAWGATE // LPU</span>', 
         badge: 'Project 001',
         img: 'url("https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1920&q=80")' 
     },
