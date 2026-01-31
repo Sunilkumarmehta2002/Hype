@@ -200,7 +200,7 @@ let cart = [];
 
 // ⚠️ IMPORTANT: Replace this with your actual Razorpay Key ID
 // Go to https://dashboard.razorpay.com/app/keys to generate one
-const RAZORPAY_KEY_ID = 'rzp_live_SARkNvIniIehhW'; 
+// const RAZORPAY_KEY_ID = 'rzp_live_SARkNvIniIehhW'; 
 
 function addToCart(name, price) {
     // Haptic Feedback for Mobile
@@ -306,19 +306,21 @@ function processPayment() {
     
     const nameEl = document.getElementById('cust-name');
     const phoneEl = document.getElementById('cust-phone');
-    const hostelEl = document.getElementById('cust-hostel');
-    const roomEl = document.getElementById('cust-room');
+    const addressEl = document.getElementById('cust-room');
+    const typeEl = document.getElementById('cust-type');
+    const noteEl = document.getElementById('delivery-note');
     
     const name = nameEl ? nameEl.value.trim() : '';
     const phone = phoneEl ? phoneEl.value.trim() : '';
-    const hostel = hostelEl ? hostelEl.value.trim() : '';
-    const room = roomEl ? roomEl.value.trim() : '';
+    const address = addressEl ? addressEl.value.trim() : '';
+    const locationType = typeEl ? typeEl.value.trim() : '';
+    const note = noteEl ? noteEl.value.trim() : '';
     
-    console.log("Form Data:", {name, phone, hostel, room});
+    console.log("Form Data:", {name, phone, address, locationType, note});
 
-    if(!name || !phone || !hostel || !room) {
+    if(!name || !phone || !address || !locationType) {
         console.error("Missing form fields");
-        showToast("⚠️ Please fill all delivery details", 'warning');
+        showToast("⚠️ Please fill all required details", 'warning');
         return;
     }
     
@@ -351,7 +353,7 @@ function processPayment() {
             // Success Handler
             console.log("✅ Payment Successful! ID: " + response.razorpay_payment_id);
             showToast("Payment Successful!");
-            paymentSuccess(response.razorpay_payment_id, totalAmount, {name, phone, hostel, room});
+            paymentSuccess(response.razorpay_payment_id, totalAmount, {name, phone, area, address, locationType});
         },
         "prefill": {
             "name": name,
@@ -398,21 +400,31 @@ function openRazorpayLink() {
     
     const nameEl = document.getElementById('cust-name');
     const phoneEl = document.getElementById('cust-phone');
-    const hostelEl = document.getElementById('cust-hostel');
-    const roomEl = document.getElementById('cust-room');
+    const addressEl = document.getElementById('cust-room');
+    const typeEl = document.getElementById('cust-type');
     
     const name = nameEl.value;
     const phone = phoneEl.value;
-    const hostel = hostelEl.value;
-    const room = roomEl.value;
+    const address = addressEl.value;
+    const locationType = typeEl ? typeEl.value : 'General';
+    const note = document.getElementById('delivery-note') ? document.getElementById('delivery-note').value.trim() : '';
+    
+    // Get location type display name
+    const locationTypeMap = {
+        'home': '🏠 Home',
+        'apartment': '🏢 Apartment',
+        'pg': '🛏️ PG/Hostel',
+        'office': '🏛️ Office',
+        'shop': '🏪 Shop'
+    };
+    const locationTypeDisplay = locationTypeMap[locationType] || locationType;
     
     // Get Google Maps URL if available (from geolocation)
-    const mapUrl = roomEl.dataset.mapUrl || null;
-    const latitude = roomEl.dataset.latitude || null;
-    const longitude = roomEl.dataset.longitude || null;
+    const addressElem = document.getElementById('cust-room');
+    const mapUrl = addressElem.dataset.mapUrl || null;
 
-    if(!name || !phone || !hostel || !room) {
-        alert("Please fill in all delivery details (Name, Phone, Location).");
+    if(!name || !phone || !address || !locationType) {
+        alert("Please fill in all required details (Name, Phone, Address, Location Type).");
         return;
     }
 
@@ -424,24 +436,32 @@ function openRazorpayLink() {
     const orderItems = cart.map(i => `${i.qty}x ${i.name}`).join(', ');
     
     // Generate location string with map link if geolocation was used
-    let locationString = `${hostel} - Room ${room}`;
+    let locationString = `${address} (${locationTypeDisplay})`;
     if (mapUrl) {
         locationString += ` %0A🗺️ *Google Maps:* ${mapUrl}`;
     }
     
+    // Add delivery note if provided
+    let deliveryNoteText = '';
+    if (note) {
+        deliveryNoteText = `%0A📝 *Special Instructions:* ${note}`;
+    }
+    
     const orderNote =
-  `🛒 *NEW ORDER RECEIVED (WhatsApp)* %0A` +
+  `🛍️ *NEW ORDER - Hype Delivery* %0A` +
   `━━━━━━━━━━━━━━━━━━%0A` +
   `💰 *Total Amount:* ₹${totalAmount}%0A` +
-  `📦 *Items Ordered:* %0A${orderItems}%0A` +
+  `📦 *Items:* ${orderItems}%0A` +
   `━━━━━━━━━━━━━━━━━━%0A` +
-  `👤 *Customer Name:* ${name}%0A` +
-  `📍 *Delivery Location:* ${locationString}%0A` +
-  `📞 *Contact Number:* ${phone}%0A` +
+  `👤 *Name:* ${name}%0A` +
+  `📍 *Address:* ${locationString}%0A` +
+  `📞 *Contact:* ${phone}${deliveryNoteText}%0A` +
   `━━━━━━━━━━━━━━━━━━%0A` +
-  `💳 *Payment Method:* UPI (Pay on this)%0A` +
-  `🔗 *UPI ID:* 7297810859@slc%0A` +
-  `🙏 Please complete the payment and share the screenshot for confirmation.`;
+  `💳 *PAYMENT DETAILS*%0A` +
+  `Account: MR SUNIL KUMAR MEHTA%0A` +
+  `UPI: 7297810859@slc%0A` +
+  `🔗 https://razorpay.me/@sunilkumarmehta6544%0A` +
+  `🙏 Share payment screenshot`;
 
     
     // 4. Send order details to WhatsApp
@@ -465,22 +485,32 @@ function paymentSuccess(paymentId, amount, details) {
     // Construct Order Summary
     const orderItems = cart.map(i => `${i.qty}x ${i.name}`).join(', ');
     
-    // Get Google Maps URL if available
-    const roomEl = document.getElementById('cust-room');
-    const mapUrl = roomEl ? roomEl.dataset.mapUrl : null;
+    // Get location type display name
+    const locationTypeMap = {
+        'home': '🏠 Home',
+        'apartment': '🏢 Apartment',
+        'pg': '🛏️ PG/Hostel',
+        'office': '🏛️ Office',
+        'shop': '🏪 Shop'
+    };
+    const locationTypeDisplay = locationTypeMap[details.locationType] || details.locationType;
     
-    let locationString = `${details.hostel} - ${details.room}`;
+    // Get Google Maps URL if available
+    const addressEl = document.getElementById('cust-room');
+    const mapUrl = addressEl ? addressEl.dataset.mapUrl : null;
+    
+    let locationString = `${details.area} - ${details.address} (${locationTypeDisplay})`;
     if (mapUrl) {
         locationString += `%0A🗺️ Google Maps: ${mapUrl}`;
     }
     
-    const msg = `*NEW ORDER PAID* ✅%0A` +
+    const msg = `*✅ ORDER PAID - Hype Delivery*%0A` +
                 `*ID:* ${paymentId}%0A` +
                 `*Amt:* ₹${amount}%0A` +
                 `*Items:* ${orderItems}%0A` +
-                `----------------%0A` +
+                `────────────────%0A` +
                 `*Name:* ${details.name}%0A` +
-                `*Loc:* ${locationString}%0A` +
+                `*Address:* ${locationString}%0A` +
                 `*Phone:* ${details.phone}`;
                 
     // Clear Cart & Close Modal
@@ -540,8 +570,71 @@ function copyCode() {
 }
 
 /* =========================================
-   GEOLOCATION SYSTEM - Share Current Location
+   GEOLOCATION SYSTEM - Auto Fill Location
    ========================================= */
+function autoFillLocation() {
+    const statusDiv = document.getElementById('location-quick-status');
+    const roomInput = document.getElementById('cust-room');
+    
+    if (!navigator.geolocation) {
+        statusDiv.innerHTML = "❌ Geolocation not supported";
+        statusDiv.style.color = "#ef4444";
+        showToast("Geolocation not supported");
+        return;
+    }
+    
+    statusDiv.innerHTML = "📍 Getting location...";
+    statusDiv.style.color = "#d4af37";
+    
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const { latitude, longitude, accuracy } = position.coords;
+            
+            // Generate Google Maps URL
+            const googleMapsURL = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+            
+            // Store coordinates and map link
+            roomInput.value = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+            roomInput.dataset.mapUrl = googleMapsURL;
+            roomInput.dataset.latitude = latitude;
+            roomInput.dataset.longitude = longitude;
+            
+            statusDiv.innerHTML = `✅ Location detected (±${Math.round(accuracy)}m)`;
+            statusDiv.style.color = "#10b981";
+            
+            getReverseGeocodeInfo(latitude, longitude, statusDiv);
+            showToast("✅ Location captured!");
+        },
+        (error) => {
+            let errorMsg = "❌ ";
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMsg += "Enable location access";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMsg += "Location unavailable";
+                    break;
+                case error.TIMEOUT:
+                    errorMsg += "Request timed out";
+                    break;
+                default:
+                    errorMsg += "Error getting location";
+            }
+            statusDiv.innerHTML = errorMsg;
+            statusDiv.style.color = "#ef4444";
+            showToast(errorMsg);
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+    );
+}
+
+function shareCurrentLocation() {
+    autoFillLocation();
+}
 function shareCurrentLocation() {
     const statusDiv = document.getElementById('location-status');
     const roomInput = document.getElementById('cust-room');
