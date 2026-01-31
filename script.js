@@ -882,6 +882,13 @@ function getReverseGeocodeInfo(lat, lng, statusDiv, mapLink) {
             // Update status with location name
             statusDiv.innerHTML = `✅ <strong>${placeName}</strong><br><span style="font-size: 0.85rem; color: #aaa;">${fullAddress}</span><br>${mapLink}`;
             
+            // Update the address field with the place name instead of coordinates
+            const roomInput = document.getElementById('cust-room');
+            if (roomInput) {
+                roomInput.value = fullAddress || placeName;
+                console.log("✅ Address field updated with:", fullAddress || placeName);
+            }
+            
             console.log("📍 Reverse Geocode Info:", {
                 placeName: placeName,
                 fullAddress: fullAddress,
