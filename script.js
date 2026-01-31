@@ -433,17 +433,16 @@ function openRazorpayLink() {
     // 4. Send order details to WhatsApp
     const whatsappMessage = `https://wa.me/917297810859?text=${orderNote}`;
     
-    // 5. Clear Cart & Close Modal
-    toggleCart();
-    cart = []; 
-    updateCartUI();
-    
-    // 6. Open WhatsApp and Razorpay in sequence
-    // First send to WhatsApp
+    // 5. Open WhatsApp first with the message
     window.open(whatsappMessage, '_blank');
     
-    // Then open Razorpay payment link after a short delay
+    // 6. Then clear Cart & Close Modal after opening WhatsApp
     setTimeout(() => {
+        toggleCart();
+        cart = []; 
+        updateCartUI();
+        
+        // 7. Then open Razorpay payment link
         window.open('https://razorpay.me/@sunilkumarmehta6544', '_blank');
     }, 500);
 }
