@@ -176,16 +176,10 @@
                 </div>
             </div>
     
-            <div class="checkout-form">
+            <div class="checkout-form" style="max-height: 60vh; overflow-y: auto; padding-right: 8px;">
                 <h4 class="rajdhani" style="margin-bottom: 15px; color: #d4af37; display: flex; align-items: center; gap: 8px; font-size: 1rem; letter-spacing: 1px;">
                     <span>📍</span> DELIVERY DETAILS
                 </h4>
-
-                <!-- Quick Location Capture -->
-                <button type="button" onclick="autoFillLocation()" style="width: 100%; margin-bottom: 12px; padding: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(245,158,11,0.3);">
-                    <span>🗺️</span> Detect My Location
-                </button>
-                <div id="location-quick-status" style="font-size: 0.8rem; color: #10b981; text-align: center; margin-bottom: 12px; min-height: 18px;"></div>
 
                 <!-- Name & Phone -->
                 <div class="input-group">
@@ -197,7 +191,7 @@
                     <label>WhatsApp Number</label>
                 </div>
 
-                <!-- Location Type & Address -->
+                <!-- Location Type -->
                 <div class="input-group">
                     <select id="cust-type" required>
                         <option value="" disabled selected>Select Location Type</option>
@@ -209,6 +203,12 @@
                     </select>
                     <label>Location Type</label>
                 </div>
+
+                <!-- Quick Location Capture -->
+                <button type="button" onclick="autoFillLocation()" style="width: 100%; margin-bottom: 12px; padding: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(245,158,11,0.3);">
+                    <span>🗺️</span> Detect My Location
+                </button>
+                <div id="location-quick-status" style="font-size: 0.8rem; color: #10b981; text-align: center; margin-bottom: 12px; min-height: 18px;"></div>
 
                 <!-- Address Input -->
                 <div class="input-group">
