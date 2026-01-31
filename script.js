@@ -495,11 +495,15 @@ function processPayment() {
 }
 
 function openRazorpayLink() {
-    // 1. Validation (Same as processPayment)
+    console.log("🔵 PAY VIA WHATSAPP button clicked");
+    
+    // 1. Validation
     if(cart.length === 0) {
         showToast("❌ Cart is empty! Add items first", 'error');
+        console.error("Cart is empty");
         return;
     }
+    console.log("✅ Cart has items:", cart.length);
     
     const nameEl = document.getElementById('cust-name');
     const phoneEl = document.getElementById('cust-phone');
@@ -512,6 +516,8 @@ function openRazorpayLink() {
     const locationType = typeEl ? typeEl.value.trim() : 'General';
     const note = document.getElementById('delivery-note') ? document.getElementById('delivery-note').value.trim() : '';
     
+    console.log("📋 Form Data:", {name, phone, address, locationType});
+    
     // Validate all required fields
     if(!name || !phone || !address || !locationType) {
         const missing = [];
@@ -520,6 +526,7 @@ function openRazorpayLink() {
         if(!address) missing.push('Address');
         if(!locationType) missing.push('Location Type');
         showToast(`⚠️ Missing: ${missing.join(', ')}`, 'warning');
+        console.warn("Missing fields:", missing);
         switchTab('tab-delivery');
         return;
     }
@@ -528,9 +535,12 @@ function openRazorpayLink() {
     const phoneRegex = /^[0-9]{10}$/;
     if(!phoneRegex.test(phone.replace(/[^0-9]/g, ''))) {
         showToast("⚠️ Phone number must be 10 digits", 'warning');
+        console.warn("Invalid phone format:", phone);
         switchTab('tab-delivery');
         return;
     }
+    
+    console.log("✅ All validations passed");
     
     // Get location type display name
     const locationTypeMap = {
@@ -542,37 +552,24 @@ function openRazorpayLink() {
     };
     const locationTypeDisplay = locationTypeMap[locationType] || locationType;
     
-    // Get Google Maps URL if available (from geolocation)
-    const addressElem = document.getElementById('cust-room');
-    const mapUrl = addressElem.dataset.mapUrl || null;
-
     // 2. Calculate Total Amount
     let totalAmount = 0;
     cart.forEach(item => totalAmount += (item.price * item.qty));
+    console.log("💰 Total Amount:", totalAmount);
     
-    // 3. Construct Order Summary with Google Maps link if available
-    const orderItems = cart.map(i => `${i.qty}x ${i.name}`).join(', ');
+    // Build Google Maps URL
+    const locationLat = addressEl.dataset.latitude || null;
+    const locationLng = addressEl.dataset.longitude || null;
+    console.log("📍 GPS Coordinates:", {locationLat, locationLng});
     
-    // Generate location string with map link if geolocation was used
-    let locationString = `${address} (${locationTypeDisplay})`;
-    let mapUrlEncoded = '';
-    if (mapUrl) {
-        // Properly encode the map URL for WhatsApp
-        mapUrlEncoded = `%0A🗺️ *Google Maps:* ${encodeURIComponent(mapUrl)}`;
-    }
+    const mapsUrl = locationLat && locationLng
+      ? `https://www.google.com/maps?q=${locationLat},${locationLng}`
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
     
-    // Add delivery note if provided
-    let deliveryNoteText = '';
-    if (note && note.length > 0) {
-        deliveryNoteText = `%0A📝 *Special Instructions:* ${encodeURIComponent(note)}`;
-    }
+    console.log("🗺️ Maps URL:", mapsUrl);
     
-  // Build Google Maps URL (latitude & longitude OR full address)
-const mapsUrl = locationLat && locationLng
-  ? `https://www.google.com/maps?q=${locationLat},${locationLng}`
-  : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-
-const orderNote = `🛍️ *NEW ORDER — HYPE DELIVERY*
+    // Build WhatsApp message
+    const orderNote = `🛍️ *NEW ORDER — HYPE DELIVERY*
 
 💰 *TOTAL AMOUNT:* ₹${totalAmount}
 
@@ -587,6 +584,7 @@ Phone: ${phone}
 
 📍 *DELIVERY ADDRESS*
 ${address}
+(${locationTypeDisplay})
 
 🗺️ *GOOGLE MAP LOCATION*
 ${mapsUrl}
@@ -601,30 +599,33 @@ Account Name: MR SUNIL KUMAR MEHTA
 upi://pay?pa=7297810859@slc&pn=SUNIL&am=${totalAmount}
 
 ✅ *Please complete the payment and reply with the payment screenshot to confirm your order.*`;
-
-
     
-    // 4. Send order details to WhatsApp
+    console.log("📱 Building WhatsApp message...");
+    
+    // Send to WhatsApp
     const whatsappMessage = `https://wa.me/917297810859?text=${encodeURIComponent(orderNote)}`;
+    console.log("✅ Opening WhatsApp...");
     
-    // 5. Open WhatsApp first with the message
-    window.open(whatsappMessage, '_blank');
-    
-    // 6. Show success toast
-    showToast('✅ Order sent to WhatsApp! Opening payment link...', 'success');
-    
-    // 7. Then clear Cart & Close Modal after opening WhatsApp
+    showToast('📱 Opening WhatsApp...', 'info');
     setTimeout(() => {
+        window.open(whatsappMessage, '_blank');
+        console.log("✅ WhatsApp window opened");
+    }, 300);
+    
+    // Clear cart and close modal
+    setTimeout(() => {
+        showToast('✅ Order sent! Complete payment...', 'success');
         toggleCart();
         cart = []; 
         updateCartUI();
-        
-        // 8. Show payment instruction
-        showToast('📱 Complete payment via UPI link that opened', 'info');
-        
-        // 9. Open Razorpay payment link
-        window.open('https://razorpay.me/@sunilkumarmehta6544', '_blank');
+        console.log("✅ Cart cleared and modal closed");
     }, 800);
+    
+    // Open UPI payment
+    setTimeout(() => {
+        window.open('upi://pay?pa=7297810859@slc&pn=SUNIL&am=' + totalAmount, '_blank');
+        console.log("✅ UPI payment window opened");
+    }, 1200);
 }
 
 function paymentSuccess(paymentId, amount, details) {
