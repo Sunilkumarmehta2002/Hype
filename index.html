@@ -9,6 +9,9 @@
     <meta property="og:title" content="Hype | Premium Curations Platform">
     <meta property="og:image" content="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=80">
     <meta name="theme-color" content="#d4af37">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23d4af37' width='192' height='192'/><text x='50%' y='50%' font-size='100' fill='%231a1a1a' text-anchor='middle' dy='.3em' font-weight='bold' font-family='Arial'>H</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23d4af37' width='192' height='192' rx='45'/><text x='50%' y='50%' font-size='100' fill='%231a1a1a' text-anchor='middle' dy='.3em' font-weight='bold' font-family='Arial'>H</text></svg>">
 
     <style>
     * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Poppins, Arial, sans-serif; }
@@ -432,7 +435,7 @@
                 <div class="menu-card">
                     <div class="menu-img-wrap">
                         <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80" class="menu-img">
-                        <div class="menu-badge">KOTA SPECIAL</div>
+                        <div class="menu-badge">HYPE SPECIAL</div>
                         <div class="menu-badge" style="background:#ef4444; top: 40px;">🔥 BEST SELLER</div>
                     </div>
                     <div class="menu-body">
@@ -1221,7 +1224,7 @@
                 <div class="brand" style="margin-bottom:0.5rem;"><i data-lucide="zap"></i><span>HYPE</span></div>
                 <div style="font-size: 0.7rem; letter-spacing: 1px; color: #d4af37; opacity: 0.7; margin-bottom: 1.5rem;">by PROVERTOS</div>
                 <p style="margin-bottom:1rem; line-height:1.6;">
-                    The authentic taste of Kota, delivered to your hostel doorstep. 
+                    The authentic taste of food, delivered to your hostel/PG doorstep. 
                     <br>Built by students, for students.
                 </p>
                 <div style="display:flex; align-items:center; gap:8px;">
@@ -1263,6 +1266,122 @@
             <p>&copy; 2025 Hype Ventures. All systems nominal.</p>
         </div>
     </footer>
+
+    <!-- PWA Install Prompt Popup -->
+    <div id="pwa-install-popup" class="pwa-popup" style="display: none;">
+        <div class="pwa-popup-content">
+            <div class="pwa-popup-header">
+                <h2 style="margin: 0; color: #d4af37; font-size: 1.3rem; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.5rem;">📱</span> Install Hype
+                </h2>
+                <button class="pwa-close-btn" onclick="closePWAPopup()">✕</button>
+            </div>
+            <div class="pwa-popup-body">
+                <p style="margin: 12px 0; color: #ccc; font-size: 0.95rem;">
+                    Add Hype to your home screen for quick access to our premium delivery service!
+                </p>
+                <div class="pwa-features" style="background: rgba(212,175,55,0.1); padding: 12px; border-radius: 8px; margin: 12px 0; border-left: 3px solid #d4af37;">
+                    <div style="font-size: 0.9rem; color: #aaa; margin: 6px 0;">
+                        <span style="color: #d4af37;">✓</span> Fast app-like experience
+                    </div>
+                    <div style="font-size: 0.9rem; color: #aaa; margin: 6px 0;">
+                        <span style="color: #d4af37;">✓</span> Works offline
+                    </div>
+                    <div style="font-size: 0.9rem; color: #aaa; margin: 6px 0;">
+                        <span style="color: #d4af37;">✓</span> One-tap access
+                    </div>
+                </div>
+            </div>
+            <div class="pwa-popup-footer" style="display: flex; gap: 10px; margin-top: 16px;">
+                <button class="pwa-btn-cancel" onclick="closePWAPopup()" style="flex: 1; padding: 12px; background: transparent; border: 1.5px solid #555; color: #aaa; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                    Not Now
+                </button>
+                <button class="pwa-btn-install" onclick="installPWA()" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #d4af37, #b8860b); color: #1a1a1a; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(212,175,55,0.3);">
+                    Add to Home Screen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .pwa-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: popupFadeIn 0.3s ease;
+        }
+
+        @keyframes popupFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .pwa-popup-content {
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: popupSlideIn 0.3s ease;
+        }
+
+        @keyframes popupSlideIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .pwa-popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #444;
+        }
+
+        .pwa-close-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .pwa-close-btn:hover {
+            color: #d4af37;
+        }
+
+        .pwa-btn-install:hover {
+            background: linear-gradient(135deg, #f0c856, #c4a747) !important;
+            box-shadow: 0 6px 16px rgba(212,175,55,0.4) !important;
+            transform: translateY(-2px);
+        }
+
+        .pwa-btn-cancel:hover {
+            border-color: #d4af37;
+            color: #d4af37;
+        }
+    </style>
 
     <script src="script.js"></script>
 </body>

@@ -45,8 +45,80 @@ const projects = {
 };
 
 /* =========================================
-   2. VIEW CONTROLLER
+   PWA INSTALLATION PROMPT
    ========================================= */
+let deferredPrompt = null;
+let pwaInstallShown = false;
+
+// Detect if app is already installed
+window.addEventListener('beforeinstallprompt', (e) => {
+    console.log("🔔 Install prompt available");
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Show custom install popup after 3 seconds
+    if(!pwaInstallShown) {
+        setTimeout(() => {
+            showPWAPopup();
+            pwaInstallShown = true;
+        }, 3000);
+    }
+});
+
+// Check if app is already installed
+window.addEventListener('appinstalled', () => {
+    console.log('✅ App successfully installed!');
+    closePWAPopup();
+    showToast('✅ Hype has been added to your home screen!', 'success');
+    deferredPrompt = null;
+});
+
+function showPWAPopup() {
+    const popup = document.getElementById('pwa-install-popup');
+    if(popup) {
+        popup.style.display = 'flex';
+        console.log("📱 Showing PWA install popup");
+    }
+}
+
+function closePWAPopup() {
+    const popup = document.getElementById('pwa-install-popup');
+    if(popup) {
+        popup.style.display = 'none';
+    }
+}
+
+async function installPWA() {
+    if(!deferredPrompt) {
+        console.log("❌ Install prompt not available");
+        showToast("Installation not available on your device", 'warning');
+        return;
+    }
+    
+    try {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`🎯 User choice: ${outcome}`);
+        deferredPrompt = null;
+        closePWAPopup();
+    } catch (err) {
+        console.error("❌ Install error:", err);
+        showToast("Installation failed. Try again later.", 'error');
+    }
+}
+
+// Register service worker for offline support
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+            console.log("✅ Service Worker registered");
+        }).catch(err => {
+            console.log("Service Worker not available:", err);
+        });
+    });
+}
+
+
 function activateView(pid, btnElement) {
     const config = projects[pid];
     if (!config) return;
