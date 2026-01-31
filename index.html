@@ -162,75 +162,141 @@
 
     <div class="cart-modal-overlay" id="cart-modal">
         <div class="cart-modal">
+            <!-- Header with Close Button -->
             <div class="cart-header">
-                <h3 class="rajdhani">YOUR ORDER</h3>
+                <div style="flex: 1;">
+                    <h3 class="rajdhani" style="margin-bottom: 4px; font-size: 1.3rem;">🛒 YOUR ORDER</h3>
+                    <p style="font-size: 0.8rem; color: #888; margin: 0;">Complete your delivery in 3 steps</p>
+                </div>
                 <button class="close-cart" onclick="toggleCart()">×</button>
             </div>
     
-            <div class="cart-body" id="cart-items-container">
-                <div class="empty-cart-msg">Your cart is empty. add some snacks!</div>
-            </div>
-    
-            <div class="cart-summary">
-                <div class="summary-row" style="padding: 0 20px; display:flex; justify-content:space-between; font-weight:bold; color:var(--accent);">
-                    <span>Total Amount</span> <span id="cart-total">₹0</span>
-                </div>
-            </div>
-    
-            <div class="checkout-form" style="max-height: 60vh; overflow-y: auto; padding-right: 8px;">
-                <h4 class="rajdhani" style="margin-bottom: 15px; color: #d4af37; display: flex; align-items: center; gap: 8px; font-size: 1rem; letter-spacing: 1px;">
-                    <span>📍</span> DELIVERY DETAILS
-                </h4>
-
-                <!-- Name & Phone -->
-                <div class="input-group">
-                    <input type="text" id="cust-name" placeholder=" " required>
-                    <label>Full Name</label>
-                </div>
-                <div class="input-group">
-                    <input type="tel" id="cust-phone" placeholder=" " required>
-                    <label>WhatsApp Number</label>
+            <!-- Unified Content Area with Tabs -->
+            <div class="unified-cart-content">
+                <!-- TAB 1: ITEMS -->
+                <div class="unified-tab active" id="tab-items">
+                    <div class="tab-label" style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--border);">
+                        <span style="background: var(--accent); color: #000; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">1</span>
+                        <span class="rajdhani" style="font-size: 1rem; color: #fff;">SELECT ITEMS</span>
+                    </div>
+                    <div class="cart-body" id="cart-items-container">
+                        <div class="empty-cart-msg">Your cart is empty. Add some snacks!</div>
+                    </div>
+                    <div class="cart-summary" style="padding: 12px 0; border-top: 1px solid var(--border); margin-top: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #888; font-size: 0.95rem;">Subtotal</span>
+                            <span id="cart-subtotal" style="font-size: 1.1rem; color: var(--accent); font-weight: bold;">₹0</span>
+                        </div>
+                    </div>
+                    <button class="btn-tab-next" onclick="switchTab('tab-delivery')" style="width: 100%; margin-top: 16px; padding: 12px; background: linear-gradient(135deg, var(--accent), #e6c547); color: #000; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: all 0.3s ease;">
+                        NEXT: DELIVERY <span style="margin-left: 6px;">→</span>
+                    </button>
                 </div>
 
-                <!-- Location Type -->
-                <div class="input-group">
-                    <select id="cust-type" required>
-                        <option value="" disabled selected>Select Location Type</option>
-                        <option value="home">🏠 Home</option>
-                        <option value="apartment">🏢 Apartment</option>
-                        <option value="pg">🛏️ PG/Hostel</option>
-                        <option value="office">🏛️ Office</option>
-                        <option value="shop">🏪 Shop</option>
-                    </select>
-                    <label>Location Type</label>
-                </div>
+                <!-- TAB 2: DELIVERY -->
+                <div class="unified-tab" id="tab-delivery">
+                    <div class="tab-label" style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--border);">
+                        <span style="background: var(--accent); color: #000; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">2</span>
+                        <span class="rajdhani" style="font-size: 1rem; color: #fff;">DELIVERY INFO</span>
+                    </div>
 
-                <!-- Quick Location Capture -->
-                <button type="button" onclick="autoFillLocation()" style="width: 100%; margin-bottom: 12px; padding: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(245,158,11,0.3);">
-                    <span>🗺️</span> Detect My Location
-                </button>
-                <div id="location-quick-status" style="font-size: 0.8rem; color: #10b981; text-align: center; margin-bottom: 12px; min-height: 18px;"></div>
+                    <div style="overflow-y: auto; max-height: 45vh; padding-right: 8px;">
+                        <!-- Name & Phone -->
+                        <div class="input-group">
+                            <input type="text" id="cust-name" placeholder=" " required>
+                            <label>👤 Full Name</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="tel" id="cust-phone" placeholder=" " required>
+                            <label>📱 WhatsApp Number</label>
+                        </div>
 
-                <!-- Address Input -->
-                <div class="input-group">
-                    <input type="text" id="cust-room" placeholder=" " required>
-                    <label>House No. / Address</label>
-                </div>
+                        <!-- Location Type -->
+                        <div class="input-group">
+                            <select id="cust-type" required>
+                                <option value="" disabled selected>Select Location Type</option>
+                                <option value="home">🏠 Home</option>
+                                <option value="apartment">🏢 Apartment</option>
+                                <option value="pg">🛏️ PG/Hostel</option>
+                                <option value="office">🏛️ Office</option>
+                                <option value="shop">🏪 Shop</option>
+                            </select>
+                            <label>📍 Location Type</label>
+                        </div>
 
-                <!-- GPS Status -->
-                <div id="location-status" style="margin-top: 8px; font-size: 0.8rem; color: #888; text-align: center;"></div>
-            </div>
-    
-            <div class="cart-footer">
-                <div style="background: rgba(212,175,55,0.15); padding: 12px; border-radius: 8px; border-left: 3px solid #d4af37; margin-bottom: 12px;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="color: #aaa;">Total Amount</span>
-                        <span id="btn-pay-amt" style="font-size: 1.2em; color: #d4af37; font-weight: bold;">₹0</span>
+                        <!-- Address Input -->
+                        <div class="input-group">
+                            <input type="text" id="cust-room" placeholder=" " required>
+                            <label>🏘️ House No. / Address</label>
+                        </div>
+
+                        <!-- Quick Location Capture -->
+                        <button type="button" onclick="autoFillLocation()" style="width: 100%; margin-bottom: 12px; padding: 12px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);">
+                            <span>🗺️</span> Auto Detect Location
+                        </button>
+                        <div id="location-quick-status" style="font-size: 0.8rem; color: #10b981; text-align: center; margin-bottom: 12px; min-height: 18px;"></div>
+                        <div id="location-status" style="font-size: 0.8rem; color: #888; text-align: center; margin-bottom: 12px;"></div>
+
+                        <!-- Special Instructions -->
+                        <div class="input-group">
+                            <textarea id="special-notes" placeholder=" " style="min-height: 60px; resize: vertical; font-family: 'Inter', sans-serif;"></textarea>
+                            <label>💬 Special Instructions (Optional)</label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border);">
+                        <button class="btn-tab-back" onclick="switchTab('tab-items')" style="flex: 1; padding: 12px; background: transparent; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: all 0.3s ease;">
+                            ← BACK
+                        </button>
+                        <button class="btn-tab-next" onclick="switchTab('tab-payment')" style="flex: 1; padding: 12px; background: linear-gradient(135deg, var(--accent), #e6c547); color: #000; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: all 0.3s ease;">
+                            PAYMENT →
+                        </button>
                     </div>
                 </div>
-                <button class="btn-pay-alternative" onclick="openRazorpayLink()" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(245,158,11,0.3);">
-                    <span>💬</span> Pay via WhatsApp
-                </button>
+
+                <!-- TAB 3: PAYMENT -->
+                <div class="unified-tab" id="tab-payment">
+                    <div class="tab-label" style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--border);">
+                        <span style="background: var(--accent); color: #000; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">3</span>
+                        <span class="rajdhani" style="font-size: 1rem; color: #fff;">CONFIRM & PAY</span>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div style="background: rgba(212,175,55,0.08); padding: 14px; border-radius: 8px; border: 1px solid rgba(212,175,55,0.2); margin-bottom: 16px;">
+                        <div style="margin-bottom: 10px;">
+                            <div style="font-size: 0.8rem; color: #888; margin-bottom: 4px;">YOUR ORDER</div>
+                            <div id="payment-items-summary" style="font-size: 0.95rem; color: #fff; font-weight: 500;">Empty</div>
+                        </div>
+                        <div style="border-top: 1px solid rgba(212,175,55,0.3); padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #aaa; font-size: 0.9rem;">Total Amount</span>
+                            <span id="btn-pay-amt" style="font-size: 1.3rem; color: var(--accent); font-weight: bold;">₹0</span>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Summary -->
+                    <div style="background: rgba(16,185,129,0.08); padding: 14px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.2); margin-bottom: 16px;">
+                        <div style="font-size: 0.8rem; color: #888; margin-bottom: 8px;">DELIVERY TO</div>
+                        <div style="font-size: 0.95rem; color: #fff; font-weight: 500;" id="delivery-summary-name">Not filled</div>
+                        <div style="font-size: 0.85rem; color: #aaa; margin-top: 4px;" id="delivery-summary-address">Not filled</div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 0.85rem; color: #888; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Payment Method</div>
+                        <button class="btn-pay-alternative" onclick="openRazorpayLink()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(245,158,11,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
+                            <span>💬</span> PAY VIA WHATSAPP
+                        </button>
+                        <button class="btn-pay" onclick="processPayment()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(16,185,129,0.3); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <span>💳</span> PAY WITH UPI
+                        </button>
+                    </div>
+
+                    <div style="display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border);">
+                        <button class="btn-tab-back" onclick="switchTab('tab-delivery')" style="flex: 1; padding: 12px; background: transparent; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: all 0.3s ease;">
+                            ← BACK
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

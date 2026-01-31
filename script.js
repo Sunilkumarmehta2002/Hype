@@ -232,6 +232,7 @@ function addToCart(name, price) {
 function updateCartUI() {
     const container = document.getElementById('cart-items-container');
     const totalEl = document.getElementById('cart-total');
+    const subtotalEl = document.getElementById('cart-subtotal');
     const btnTotalEl = document.getElementById('btn-pay-amt');
     const countBadge = document.getElementById('cart-count');
 
@@ -246,6 +247,7 @@ function updateCartUI() {
     // Update HTML elements
     if(countBadge) countBadge.innerText = count;
     if(totalEl) totalEl.innerText = '₹' + total;
+    if(subtotalEl) subtotalEl.innerText = '₹' + total;
     if(btnTotalEl) btnTotalEl.innerText = '₹' + total;
 
     // Render Items
@@ -280,11 +282,95 @@ function updateQty(index, change) {
         cart[index].qty += change;
     }
     updateCartUI();
+    updatePaymentSummary();
 }
 
 function toggleCart() {
     const modal = document.getElementById('cart-modal');
     modal.classList.toggle('active');
+    if(modal.classList.contains('active')) {
+        // Reset to first tab when opening cart
+        switchTab('tab-items');
+        updatePaymentSummary();
+    }
+}
+
+/* =========================================
+   4B. UNIFIED CART TABS SYSTEM
+   ========================================= */
+function switchTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.unified-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Show selected tab
+    const selectedTab = document.getElementById(tabName);
+    if(selectedTab) {
+        selectedTab.classList.add('active');
+        
+        // Update payment summary when switching to payment tab
+        if(tabName === 'tab-payment') {
+            updatePaymentSummary();
+        }
+        
+        // Scroll to top of tab content
+        setTimeout(() => {
+            const tabContent = selectedTab.querySelector('.cart-body, [id*="input-group"]:first-child');
+            if(tabContent) {
+                selectedTab.scrollTop = 0;
+            }
+        }, 50);
+    }
+}
+
+function updatePaymentSummary() {
+    const summaryContainer = document.getElementById('payment-items-summary');
+    const deliveryNameEl = document.getElementById('delivery-summary-name');
+    const deliveryAddressEl = document.getElementById('delivery-summary-address');
+    
+    if(summaryContainer) {
+        if(cart.length === 0) {
+            summaryContainer.innerHTML = '<div style="text-align: center; color: #888;">No items selected</div>';
+        } else {
+            summaryContainer.innerHTML = cart.map(item => `
+                <div class="payment-item">
+                    <span>${item.name} x${item.qty}</span>
+                    <span style="color: var(--accent); font-weight: 600;">₹${item.price * item.qty}</span>
+                </div>
+            `).join('');
+        }
+    }
+    
+    // Update delivery summary with form values
+    const custName = document.getElementById('cust-name').value?.trim() || '';
+    const custRoom = document.getElementById('cust-room').value?.trim() || '';
+    const custType = document.getElementById('cust-type').value?.trim() || '';
+    const custPhone = document.getElementById('cust-phone').value?.trim() || '';
+    
+    if(deliveryNameEl) {
+        if(custName) {
+            deliveryNameEl.innerText = custName;
+            deliveryNameEl.style.color = '#fff';
+        } else {
+            deliveryNameEl.innerText = 'Please fill delivery info';
+            deliveryNameEl.style.color = '#ff6b6b';
+        }
+    }
+    
+    if(deliveryAddressEl) {
+        if(custRoom && custType && custPhone) {
+            deliveryAddressEl.innerText = `${custRoom} (${custType}) • ${custPhone}`;
+            deliveryAddressEl.style.color = '#10b981';
+        } else {
+            const missing = [];
+            if(!custPhone) missing.push('phone');
+            if(!custType) missing.push('location type');
+            if(!custRoom) missing.push('address');
+            deliveryAddressEl.innerText = `Missing: ${missing.join(', ')}`;
+            deliveryAddressEl.style.color = '#ff6b6b';
+        }
+    }
 }
 
 

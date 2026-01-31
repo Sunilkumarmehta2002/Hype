@@ -898,7 +898,7 @@ footer {
 .row-inputs { display: flex; gap: 10px; }
 .row-inputs .input-group { flex: 1; }
 
-.input-group input, .input-group select {
+.input-group input, .input-group select, .input-group textarea {
     width: 100%; 
     background: transparent; 
     border: 1.5px solid rgba(212, 175, 55, 0.2);
@@ -911,7 +911,7 @@ footer {
     font-weight: 400;
     transition: all 0.3s ease;
 }
-.input-group input:focus, .input-group select:focus { 
+.input-group input:focus, .input-group select:focus, .input-group textarea:focus { 
     border-color: var(--accent); 
     background: rgba(212, 175, 55, 0.05);
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
@@ -930,7 +930,9 @@ footer {
     font-weight: 400;
 }
 .input-group input:focus ~ label,
-.input-group input:not(:placeholder-shown) ~ label {
+.input-group input:not(:placeholder-shown) ~ label,
+.input-group textarea:focus ~ label,
+.input-group textarea:not(:placeholder-shown) ~ label {
     top: -10px; 
     font-size: 0.8rem; 
     color: var(--accent);
@@ -971,6 +973,129 @@ footer {
     background: var(--accent); color: black; box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-2px);
 }
 
+/* =========================================
+   UNIFIED CART TABBED DESIGN
+   ========================================= */
+.unified-cart-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+}
+
+.unified-tab {
+    display: none;
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    animation: slideInTab 0.3s ease;
+}
+
+.unified-tab.active {
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes slideInTab {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.tab-label {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+}
+
+.tab-label span:first-child {
+    background: var(--accent);
+    color: #000;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.tab-label span:last-child {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #fff;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.btn-tab-next, .btn-tab-back {
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.btn-tab-next:active {
+    transform: scale(0.98);
+}
+
+.btn-tab-back:active {
+    transform: scale(0.98);
+}
+
+#payment-items-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+#payment-items-summary .payment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(212,175,55,0.1);
+}
+
+#payment-items-summary .payment-item:last-child {
+    border-bottom: none;
+}
+
+#delivery-summary-name,
+#delivery-summary-address {
+    word-break: break-word;
+}
+
+/* Mobile Responsive - Adjust tab label spacing */
+@media (max-width: 480px) {
+    .unified-tab {
+        padding: 16px;
+    }
+    
+    .tab-label span:first-child {
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
+    }
+    
+    .tab-label span:last-child {
+        font-size: 0.9rem;
+    }
+}
 
 
 /* =========================================
