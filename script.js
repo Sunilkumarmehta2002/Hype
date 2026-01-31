@@ -202,7 +202,7 @@ let cart = [];
 
 // ⚠️ IMPORTANT: Replace this with your actual Razorpay Key ID
 // Go to https://dashboard.razorpay.com/app/keys to generate one
-const RAZORPAY_KEY_ID = 'rzp_test_RxVRFb392D9PUh'; 
+const RAZORPAY_KEY_ID = 'rzp_live_SARkNvIniIehhW'; 
 
 function addToCart(name, price) {
     // Haptic Feedback for Mobile
@@ -344,7 +344,7 @@ function processPayment() {
     
     // 4. Razorpay Options
     var options = {
-        "key": "rzp_test_RxVRFb392D9PUh", 
+        "key": "rzp_live_SARkNvIniIehhW", 
         "amount": totalAmount * 100, // Amount is in paise (₹1 = 100 paise)
         "currency": "INR",
         "name": "Home-Dome",
