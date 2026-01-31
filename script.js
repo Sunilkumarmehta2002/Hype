@@ -449,27 +449,30 @@ function openRazorpayLink() {
         deliveryNoteText = `%0A📝 *Special Instructions:* ${note}`;
     }
     
-    const orderNote =
+   const orderNote =
   `🛍️ *NEW ORDER - Hype Delivery*%0A` +
-  `━━━━━━━━━━━━━━━━━━%0A` +
-  `💰 *Total Amount:* ₹${totalAmount}%0A` +
-  `📦 *Items:* ${orderItems}%0A` +
-  `━━━━━━━━━━━━━━━━━━%0A` +
-  `👤 *Name:* ${name}%0A` +
-  `📍 *Address:* ${locationString}${mapUrlEncoded}%0A` +
-  `📞 *Contact:* ${phone}${deliveryNoteText}%0A` +
-  `━━━━━━━━━━━━━━━━━━%0A` +
+  `━━━━━━━━━━━━━━━━━━━━━━%0A` +
+  `📋 *ORDER SUMMARY*%0A` +
+  `┏━━━━━━━━━━━━━━━━━━━━┓%0A` +
+  `┃ 💰 Total    │ ₹${totalAmount}%0A` +
+  `┃ 📦 Items    │ ${orderItems}%0A` +
+  `┗━━━━━━━━━━━━━━━━━━━━┛%0A%0A` +
+  `👤 *CUSTOMER DETAILS*%0A` +
+  `┏━━━━━━━━━━━━━━━━━━━━┓%0A` +
+  `┃ 👤 Name     │ ${name}%0A` +
+  `┃ 📍 Address  │ ${locationString}${mapUrlEncoded}%0A` +
+  `┃ 📞 Contact  │ ${phone}%0A` +
+  `┃ 📝 Note     │ ${deliveryNoteText}%0A` +
+  `┗━━━━━━━━━━━━━━━━━━━━┛%0A%0A` +
   `💳 *PAYMENT DETAILS*%0A` +
-  `👤 Account: MR SUNIL KUMAR MEHTA%0A` +
-  `💳 UPI ID: 7297810859@slc%0A%0A` +
+  `┏━━━━━━━━━━━━━━━━━━━━┓%0A` +
+  `┃ 👤 Account  │ *MR SUNIL KUMAR MEHTA*%0A` +
+  `┃ 💳 UPI ID   │ *7297810859@slc*%0A` +
+  `┗━━━━━━━━━━━━━━━━━━━━┛%0A%0A` +
   `*🔗 PAYMENT LINKS:*%0A` +
-  `1️⃣ UPI: upi://pay?pa=7297810859@slc&pn=SUNIL&am=${totalAmount}%0A` +
-  `2️⃣ Web: https://razorpay.me/@sunilkumarmehta6544%0A%0A` +
-  `📲 *SCAN QR CODE:*%0A` +
-  `https://ibb.co/v6KM4Btf%0A` +
-  `✅ Please complete payment & share screenshot`;
+  `[UPI Payment](upi://pay?pa=7297810859@slc&pn=SUNIL&am=${totalAmount})%0A` +
+  `✅ *Please complete payment & share screenshot*`;
 
-    
     // 4. Send order details to WhatsApp
     const whatsappMessage = `https://wa.me/917297810859?text=${orderNote}`;
     
