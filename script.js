@@ -360,7 +360,15 @@ function updatePaymentSummary() {
     
     if(deliveryAddressEl) {
         if(custRoom && custType && custPhone) {
-            deliveryAddressEl.innerText = `${custRoom} (${custType}) • ${custPhone}`;
+            const locationTypeMap = {
+                'home': '🏠 Home',
+                'apartment': '🏢 Apartment',
+                'pg': '🛏️ PG/Hostel',
+                'office': '🏛️ Office',
+                'shop': '🏪 Shop'
+            };
+            const typeDisplay = locationTypeMap[custType] || custType;
+            deliveryAddressEl.innerHTML = `<div style="margin-bottom: 4px;">${custRoom}</div><div style="font-size: 0.85rem; color: #d4af37;">${typeDisplay} • ${custPhone}</div>`;
             deliveryAddressEl.style.color = '#10b981';
         } else {
             const missing = [];
@@ -569,7 +577,7 @@ function openRazorpayLink() {
     console.log("🗺️ Maps URL:", mapsUrl);
     
     // Build WhatsApp message
-    const orderNote = `🛍️ *NEW ORDER — HYPE DELIVERY*
+    let orderNote = `🛍️ *NEW ORDER — HYPE DELIVERY*
 
 💰 *TOTAL AMOUNT:* ₹${totalAmount}
 
@@ -587,7 +595,17 @@ ${address}
 (${locationTypeDisplay})
 
 🗺️ *GOOGLE MAP LOCATION*
-${mapsUrl}
+${mapsUrl}`;
+    
+    // Add special instructions if provided
+    if(note && note.length > 0) {
+        orderNote += `
+
+📝 *SPECIAL INSTRUCTIONS*
+${note}`;
+    }
+    
+    orderNote += `
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
