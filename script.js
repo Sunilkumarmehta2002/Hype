@@ -396,10 +396,20 @@ function openRazorpayLink() {
     // 1. Validation (Same as processPayment)
     if(cart.length === 0) return showToast("Cart is empty!");
     
-    const name = document.getElementById('cust-name').value;
-    const phone = document.getElementById('cust-phone').value;
-    const hostel = document.getElementById('cust-hostel').value;
-    const room = document.getElementById('cust-room').value;
+    const nameEl = document.getElementById('cust-name');
+    const phoneEl = document.getElementById('cust-phone');
+    const hostelEl = document.getElementById('cust-hostel');
+    const roomEl = document.getElementById('cust-room');
+    
+    const name = nameEl.value;
+    const phone = phoneEl.value;
+    const hostel = hostelEl.value;
+    const room = roomEl.value;
+    
+    // Get Google Maps URL if available (from geolocation)
+    const mapUrl = roomEl.dataset.mapUrl || null;
+    const latitude = roomEl.dataset.latitude || null;
+    const longitude = roomEl.dataset.longitude || null;
 
     if(!name || !phone || !hostel || !room) {
         alert("Please fill in all delivery details (Name, Phone, Location).");
@@ -410,8 +420,15 @@ function openRazorpayLink() {
     let totalAmount = 0;
     cart.forEach(item => totalAmount += (item.price * item.qty));
     
-    // 3. Construct Order Summary (Same as paymentSuccess)
+    // 3. Construct Order Summary with Google Maps link if available
     const orderItems = cart.map(i => `${i.qty}x ${i.name}`).join(', ');
+    
+    // Generate location string with map link if geolocation was used
+    let locationString = `${hostel} - Room ${room}`;
+    if (mapUrl) {
+        locationString += ` %0A🗺️ *Google Maps:* ${mapUrl}`;
+    }
+    
     const orderNote =
   `🛒 *NEW ORDER RECEIVED (WhatsApp)* %0A` +
   `━━━━━━━━━━━━━━━━━━%0A` +
@@ -419,7 +436,7 @@ function openRazorpayLink() {
   `📦 *Items Ordered:* %0A${orderItems}%0A` +
   `━━━━━━━━━━━━━━━━━━%0A` +
   `👤 *Customer Name:* ${name}%0A` +
-  `📍 *Delivery Location:* ${hostel} - Room ${room}%0A` +
+  `📍 *Delivery Location:* ${locationString}%0A` +
   `📞 *Contact Number:* ${phone}%0A` +
   `━━━━━━━━━━━━━━━━━━%0A` +
   `💳 *Payment Method:* UPI (Pay on this)%0A` +
@@ -448,13 +465,22 @@ function paymentSuccess(paymentId, amount, details) {
     // Construct Order Summary
     const orderItems = cart.map(i => `${i.qty}x ${i.name}`).join(', ');
     
+    // Get Google Maps URL if available
+    const roomEl = document.getElementById('cust-room');
+    const mapUrl = roomEl ? roomEl.dataset.mapUrl : null;
+    
+    let locationString = `${details.hostel} - ${details.room}`;
+    if (mapUrl) {
+        locationString += `%0A🗺️ Google Maps: ${mapUrl}`;
+    }
+    
     const msg = `*NEW ORDER PAID* ✅%0A` +
                 `*ID:* ${paymentId}%0A` +
                 `*Amt:* ₹${amount}%0A` +
                 `*Items:* ${orderItems}%0A` +
                 `----------------%0A` +
                 `*Name:* ${details.name}%0A` +
-                `*Loc:* ${details.hostel} - ${details.room}%0A` +
+                `*Loc:* ${locationString}%0A` +
                 `*Phone:* ${details.phone}`;
                 
     // Clear Cart & Close Modal
@@ -534,37 +560,48 @@ function shareCurrentLocation() {
     navigator.geolocation.getCurrentPosition(
         (position) => {
             const { latitude, longitude, accuracy } = position.coords;
-            const coordsText = `${latitude.toFixed(6)}, ${longitude.toFixed(6)} (Accuracy: ${Math.round(accuracy)}m)`;
             
-            roomInput.value = coordsText;
+            // Generate Google Maps URL
+            const googleMapsURL = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+            
+            // Create clickable link HTML
+            const mapLink = `<a href="${googleMapsURL}" target="_blank" style="color: #d4af37; text-decoration: underline; font-weight: 600; cursor: pointer;">📍 ${latitude.toFixed(6)}, ${longitude.toFixed(6)}</a>`;
+            
+            // Store the coordinates in a hidden field for form submission
+            roomInput.value = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+            roomInput.dataset.mapUrl = googleMapsURL;
+            roomInput.dataset.latitude = latitude;
+            roomInput.dataset.longitude = longitude;
+            
             hostelSelect.value = "CUSTOM";
             
-            statusDiv.innerHTML = `✅ Location captured! Accuracy: ${Math.round(accuracy)}m`;
+            statusDiv.innerHTML = `✅ <strong>Location Captured!</strong><br>Accuracy: ±${Math.round(accuracy)}m<br>${mapLink}`;
             statusDiv.style.color = "#10b981";
             
             console.log("📍 Geolocation Data:", {
                 latitude: latitude.toFixed(6),
                 longitude: longitude.toFixed(6),
                 accuracy: Math.round(accuracy),
+                googleMapsURL: googleMapsURL,
                 timestamp: new Date().toLocaleString()
             });
             
-            showToast("📍 Location captured successfully!");
+            showToast("✅ Location captured! Click status to open in Google Maps");
             
-            // Optional: Get reverse geocoding info (requires API)
-            getReverseGeocodeInfo(latitude, longitude);
+            // Optional: Get reverse geocoding info
+            getReverseGeocodeInfo(latitude, longitude, statusDiv, mapLink);
         },
         (error) => {
             let errorMsg = "";
             switch(error.code) {
                 case error.PERMISSION_DENIED:
-                    errorMsg = "❌ Permission denied. Enable location in settings.";
+                    errorMsg = "❌ Permission denied. Enable location in device settings.";
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    errorMsg = "❌ Location unavailable. Try again.";
+                    errorMsg = "❌ Location unavailable. Try again in a few moments.";
                     break;
                 case error.TIMEOUT:
-                    errorMsg = "❌ Location request timeout.";
+                    errorMsg = "❌ Location request timed out. Please retry.";
                     break;
                 default:
                     errorMsg = "❌ Error getting location.";
@@ -583,7 +620,7 @@ function shareCurrentLocation() {
 }
 
 // Get readable location name from coordinates (using OpenStreetMap Nominatim - free)
-function getReverseGeocodeInfo(lat, lng) {
+function getReverseGeocodeInfo(lat, lng, statusDiv, mapLink) {
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
     
     fetch(url, {
@@ -593,8 +630,17 @@ function getReverseGeocodeInfo(lat, lng) {
     .then(data => {
         if (data && data.address) {
             const address = data.address;
-            const placeName = address.neighbourhood || address.suburb || address.village || address.town || address.city || "Location";
-            console.log("📍 Reverse Geocode:", placeName, address);
+            const placeName = address.neighbourhood || address.suburb || address.village || address.town || address.city || address.road || "Location";
+            const fullAddress = data.display_name ? data.display_name.split(',').slice(0, 3).join(',') : placeName;
+            
+            // Update status with location name
+            statusDiv.innerHTML = `✅ <strong>${placeName}</strong><br><span style="font-size: 0.85rem; color: #aaa;">${fullAddress}</span><br>${mapLink}`;
+            
+            console.log("📍 Reverse Geocode Info:", {
+                placeName: placeName,
+                fullAddress: fullAddress,
+                addressData: address
+            });
         }
     })
     .catch(err => console.error("Reverse geocoding error:", err));
